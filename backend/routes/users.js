@@ -1,0 +1,118 @@
+import { Router } from 'express';
+import { body, validationResult } from 'express-validator';
+
+import { User } from '../models/index.js';
+import { authorize } from '../middleware/auth.js';
+import { logAudit } from '../utils/audit.js';
+
+const router = Router();
+
+router.get('/', authorize('admin'), async (req, res) => {
+  try {
+    const users = await User.findAll({ order: [['createdAt', 'DESC']] });
+    res.json(users);
+  } catch (error) {
+    console.error('List users error:', error);
+    res.status(500).json({ message: 'Unable to fetch users' });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    if (req.params.id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const user = await User.findByPk(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ message: 'Unable to fetch user' });
+  }
+});
+
+router.put(
+  '/:id',
+  [
+    body('name').optional().isLength({ min: 2 }).withMessage('Name too short'),
+    body('email').optional().isEmail().withMessage('Email invalid'),
+    body('role').optional().isIn(['admin', 'user']).withMessage('Role invalid')
+  ],
+  async (req, res) => {
+    try {
+      if (req.params.id !== req.user.id && req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const user = await User.scope('withPassword').findByPk(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const payload = {
+        name: req.body.name ?? user.name,
+        email: req.body.email ?? user.email,
+        isActive: req.body.isActive ?? user.isActive
+      };
+
+      if (req.body.role && req.user.role === 'admin') {
+        payload.role = req.body.role;
+      }
+
+      if (req.body.password) {
+        payload.password = req.body.password;
+      }
+
+      await user.update(payload);
+      const sanitized = await User.findByPk(user.id);
+      await logAudit({
+        userId: req.user.id,
+        action: 'USER_UPDATED',
+        description: `${req.user.name} updated ${user.name}`,
+        metadata: { targetUser: user.id },
+        ipAddress: req.ip
+      });
+      res.json(sanitized);
+    } catch (error) {
+      console.error('Update user error:', error);
+      res.status(500).json({ message: 'Unable to update user' });
+    }
+  }
+);
+
+router.delete('/:id', async (req, res) => {
+  try {
+    if (req.params.id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const user = await User.findByPk(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await user.update({ isActive: false });
+    await logAudit({
+      userId: req.user.id,
+      action: 'USER_DEACTIVATED',
+      description: `${req.user.name} deactivated ${user.name}`,
+      metadata: { targetUser: user.id },
+      ipAddress: req.ip
+    });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ message: 'Unable to delete user' });
+  }
+});
+
+export default router;
