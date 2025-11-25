@@ -29,8 +29,6 @@ const Dashboard = () => {
   const [loadingOverview, setLoadingOverview] = useState(true);
   const [activeDocument, setActiveDocument] = useState(null);
 
-  const filterParams = useMemo(() => ({ ...filters }), [filters]);
-
   const fetchOverview = async () => {
     try {
       const { data } = await api.get('/documents/overview');
@@ -42,28 +40,31 @@ const Dashboard = () => {
     }
   };
 
-  const fetchDocuments = async (page = 1) => {
+  const fetchDocuments = async (page = 1, currentFilters = filters) => {
     setLoadingDocuments(true);
     try {
       const params = {
         page,
         limit: 8,
-        search: filterParams.search || undefined,
-        documentType: filterParams.documentType || undefined,
-        category: filterParams.category || undefined,
-        tags: filterParams.tag || undefined,
-        fileType: filterParams.fileType || undefined
+        search: currentFilters.search || undefined,
+        documentType: currentFilters.documentType || undefined,
+        category: currentFilters.category || undefined,
+        tags: currentFilters.tag || undefined,
+        fileType: currentFilters.fileType || undefined
       };
       const { data } = await api.get('/documents', { params });
-      setDocuments(data.documents);
+      setDocuments(data.documents || []);
       setPagination({
-        page: data.pagination.page,
-        pages: data.pagination.pages,
-        total: data.pagination.total
+        page: data.pagination?.page || 1,
+        pages: data.pagination?.pages || 1,
+        total: data.pagination?.total || 0
       });
     } catch (error) {
       console.error('Document list error', error);
-      toast.error('Unable to load documents');
+      // Only show toast on actual errors, not on rate limiting
+      if (error.response?.status !== 429) {
+        toast.error('Unable to load documents');
+      }
     } finally {
       setLoadingDocuments(false);
     }
@@ -75,31 +76,35 @@ const Dashboard = () => {
         api.get('/documents/categories'),
         api.get('/documents/tags')
       ]);
-      setCategories(catRes.data);
-      setTags(tagRes.data);
+      setCategories(catRes.data || []);
+      setTags(tagRes.data || []);
     } catch (error) {
       console.error('Ref data error', error);
     }
   };
 
+  // Initial load
   useEffect(() => {
     fetchOverview();
     fetchReferenceData();
   }, []);
 
+  // When filters change, fetch documents from page 1
   useEffect(() => {
-    fetchDocuments(1);
-    setPagination((prev) => ({ ...prev, page: 1 }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterParams]);
+    fetchDocuments(1, filters);
+  }, [filters.search, filters.documentType, filters.category, filters.tag, filters.fileType]);
 
+  // When pagination page changes, fetch documents
   useEffect(() => {
-    fetchDocuments(pagination.page);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (pagination.page > 1) {
+      fetchDocuments(pagination.page, filters);
+    }
   }, [pagination.page]);
 
+  // Real-time updates - fetch overview every 30 seconds
   useEffect(() => {
-    const interval = setInterval(fetchOverview, 60000);
+    fetchOverview();
+    const interval = setInterval(fetchOverview, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -135,9 +140,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-8 lg:flex-row">
-      <div className="lg:w-1/3 xl:w-1/4">
-        <div className="space-y-6">
+    <div className="w-full space-y-8">
+      {/* Stats Grid - Full Width */}
+      <div>
+        <StatsGrid overview={overview} loading={loadingOverview} />
+      </div>
+
+      {/* Main Content - Responsive Grid */}
+      <div className="grid gap-8 lg:grid-cols-4">
+        {/* Sidebar - Filters and Upload */}
+        <div className="space-y-6 lg:col-span-1">
           <DocumentFilters
             filters={filters}
             onChange={handleFilterChange}
@@ -150,11 +162,9 @@ const Dashboard = () => {
             categorySuggestions={categories}
           />
         </div>
-      </div>
 
-      <div className="lg:w-2/3 xl:w-3/4">
-        <div className="space-y-6">
-          <StatsGrid overview={overview} loading={loadingOverview} />
+        {/* Main Content - Documents */}
+        <div className="space-y-6 lg:col-span-3">
           <RecentDocuments
             documents={overview?.recentDocuments || []}
             onPreview={handlePreviewDocument}
@@ -168,16 +178,6 @@ const Dashboard = () => {
             onPreview={handlePreviewDocument}
             onDownload={handleDownloadDocument}
           />
-          <div className="grid gap-4 md:hidden">
-            {documents.map((doc) => (
-              <DocumentCard
-                key={doc.id}
-                document={doc}
-                onPreview={handlePreviewDocument}
-                onDownload={handleDownloadDocument}
-              />
-            ))}
-          </div>
         </div>
       </div>
 

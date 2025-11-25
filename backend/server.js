@@ -40,6 +40,9 @@ const buildCorsOriginValidator = () => {
     ...extraOrigins,
     'http://localhost:3000',
     'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176',
     'https://localhost:5173'
   ]);
 
@@ -58,15 +61,26 @@ const buildCorsOriginValidator = () => {
     }
   };
 
+  const isLocalhost = (origin) => {
+    try {
+      const url = new URL(origin);
+      return url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+    } catch {
+      return false;
+    }
+  };
+
   return (origin, callback) => {
     if (
       !origin ||
       staticOrigins.has(origin) ||
+      isLocalhost(origin) ||
       allowSubdomain(origin, renderUrl) ||
       allowSubdomain(origin, vercelDomain ? `https://${vercelDomain}` : null)
     ) {
       callback(null, true);
     } else {
+      console.warn('❌ CORS rejected origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   };
@@ -82,12 +96,24 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// General API rate limiter - 1000 requests per 15 minutes
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
-  message: 'Too many requests, please try again later.'
+  message: 'Too many requests, please try again later.',
+  skip: (req) => req.path.startsWith('/api/auth')
+});
+
+// Auth rate limiter - 50 requests per 15 minutes (more lenient for login/register)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many login attempts, please try again later.',
+  keyGenerator: (req) => req.body?.email || req.ip
 });
 
 app.get('/', (req, res) => {
@@ -98,6 +124,7 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/api/auth', authLimiter);
 app.use('/api', apiLimiter, routes);
 
 app.use((err, req, res, next) => {

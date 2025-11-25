@@ -17,15 +17,25 @@ const VerificationModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6">
-      <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-[#0e0f13] p-8 shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
-        <div className="flex items-start justify-between">
-          <div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6 sm:px-6">
+      <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-[#0e0f13] p-6 shadow-[0_40px_120px_rgba(0,0,0,0.65)] sm:p-8">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
             <p className="text-xs uppercase tracking-[0.4em] text-primary/70">Verify access</p>
-            <h2 className="mt-2 font-heading text-3xl text-white">Enter your code</h2>
-            <p className="mt-2 text-sm text-slate-400">We emailed a six-digit code to <span className="font-semibold text-white">{email}</span>.</p>
+            <h2 className="mt-2 font-heading text-2xl text-white sm:text-3xl">Enter your code</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              We emailed a six-digit code to{' '}
+              <span className="block font-semibold text-white sm:inline">{email}</span>.
+            </p>
           </div>
-          <button type="button" onClick={onClose} className="text-slate-500 transition hover:text-white">Close</button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-shrink-0 text-slate-500 transition hover:text-white"
+            aria-label="Close"
+          >
+            ✕
+          </button>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -37,7 +47,8 @@ const VerificationModal = ({
               maxLength={6}
               value={code}
               onChange={(event) => onCodeChange(event.target.value.replace(/\D/g, ''))}
-              className="w-full rounded-2xl border border-white/10 bg-black/40 px-6 py-4 text-center text-2xl tracking-[0.6em] text-white focus:border-primary focus:outline-none"
+              autoComplete="one-time-code"
+              className="w-full rounded-2xl border border-white/10 bg-black/40 px-6 py-4 text-center text-2xl tracking-[0.6em] text-white transition focus:border-primary focus:outline-none"
               placeholder="000000"
               required
             />
@@ -53,8 +64,8 @@ const VerificationModal = ({
           </button>
         </form>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-400">
-          <p>Didn’t receive the email?</p>
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 text-sm text-slate-400 sm:flex-row">
+          <p>Didn't receive the email?</p>
           <button
             type="button"
             onClick={onResend}

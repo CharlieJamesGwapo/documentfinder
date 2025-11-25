@@ -49,8 +49,11 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
               </tr>
             ) : documents.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-10 text-center text-slate-500">
-                  No documents match the filters.
+                <td colSpan={7} className="py-10 text-center">
+                  <div className="space-y-2">
+                    <p className="text-slate-500">📄 No documents match your search.</p>
+                    <p className="text-xs text-slate-600">Try adjusting your filters or search terms.</p>
+                  </div>
                 </td>
               </tr>
             ) : (
@@ -95,17 +98,28 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
         </table>
       </div>
 
-      <div className="grid gap-4 md:hidden">
-        {loading
-          ? <p className="text-center text-slate-500">Loading…</p>
-          : documents.map((doc) => (
-            <DocumentCard
-              key={doc.id}
-              document={doc}
-              onPreview={onPreview}
-              onDownload={onDownload}
-            />
-          ))}
+      <div className="md:hidden">
+        {loading ? (
+          <div className="py-10 text-center text-slate-500">
+            <p>Loading documents…</p>
+          </div>
+        ) : documents.length === 0 ? (
+          <div className="rounded-xl border border-white/5 bg-black/20 py-10 text-center">
+            <p className="text-slate-500">📄 No documents match your search.</p>
+            <p className="mt-2 text-xs text-slate-600">Try adjusting your filters or search terms.</p>
+          </div>
+        ) : (
+          <div className="grid gap-4">
+            {documents.map((doc) => (
+              <DocumentCard
+                key={doc.id}
+                document={doc}
+                onPreview={onPreview}
+                onDownload={onDownload}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="mt-6 flex flex-col gap-3 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">

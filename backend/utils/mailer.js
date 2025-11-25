@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendOtpEmail = async ({ to, code, name }) => {
   if (!MAIL_USER || !MAIL_PASS) {
+    console.error('❌ Email credentials missing:', { MAIL_USER, MAIL_PASS: MAIL_PASS ? '***' : 'missing' });
     throw new Error('Email credentials are not configured');
   }
 
@@ -29,16 +30,24 @@ export const sendOtpEmail = async ({ to, code, name }) => {
             ${code}
           </span>
         </div>
-        <p style="color: #8794b4; font-size: 13px;">If you didn’t request this, you can safely ignore this message.</p>
+        <p style="color: #8794b4; font-size: 13px;">If you didn't request this, you can safely ignore this message.</p>
         <p style="margin-top: 32px; color: #546389; font-size: 12px;">Tesla Manufacturing & Quality Vault · Secure document intelligence</p>
       </div>
     </div>
   `;
 
-  await transporter.sendMail({
-    from: MAIL_FROM,
-    to,
-    subject: 'Tesla Ops verification code',
-    html
-  });
+  try {
+    console.log('📧 Sending OTP email to:', to);
+    const info = await transporter.sendMail({
+      from: MAIL_FROM,
+      to,
+      subject: 'Tesla Ops verification code',
+      html
+    });
+    console.log('✅ Email sent successfully:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('❌ Email send failed:', error.message);
+    throw error;
+  }
 };

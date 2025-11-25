@@ -2,12 +2,74 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 
 import { User } from '../models/index.js';
-import { authorize } from '../middleware/auth.js';
+import { authenticate, authorize } from '../middleware/auth.js';
 import { logAudit } from '../utils/audit.js';
 
 const router = Router();
 
-router.get('/', authorize('admin'), async (req, res) => {
+// Get current user profile
+router.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({ message: 'Unable to fetch profile' });
+  }
+});
+
+// Update current user profile
+router.put(
+  '/profile',
+  authenticate,
+  [
+    body('firstName').optional().trim().notEmpty().withMessage('First name required'),
+    body('middleName').optional().trim(),
+    body('lastName').optional().trim().notEmpty().withMessage('Last name required'),
+    body('suffix').optional().trim()
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const user = await User.findByPk(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const payload = {
+        firstName: req.body.firstName ?? user.firstName,
+        middleName: req.body.middleName ?? user.middleName,
+        lastName: req.body.lastName ?? user.lastName,
+        suffix: req.body.suffix ?? user.suffix
+      };
+
+      await user.update(payload);
+      const updated = await User.findByPk(user.id);
+
+      await logAudit({
+        userId: req.user.id,
+        action: 'PROFILE_UPDATED',
+        description: `${user.name} updated their profile`,
+        ipAddress: req.ip
+      });
+
+      res.json(updated);
+    } catch (error) {
+      console.error('Update profile error:', error);
+      res.status(500).json({ message: 'Unable to update profile' });
+    }
+  }
+);
+
+// Admin: Get all users
+router.get('/', authenticate, authorize('admin'), async (req, res) => {
   try {
     const users = await User.findAll({ order: [['createdAt', 'DESC']] });
     res.json(users);
@@ -17,7 +79,8 @@ router.get('/', authorize('admin'), async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+// Admin/Self: Get specific user
+router.get('/:id', authenticate, async (req, res) => {
   try {
     if (req.params.id !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Forbidden' });
@@ -35,8 +98,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Admin: Update user
 router.put(
   '/:id',
+  authenticate,
   [
     body('firstName').optional().isLength({ min: 2 }).withMessage('First name too short'),
     body('middleName').optional().isLength({ min: 2 }).withMessage('Middle name too short'),
@@ -99,7 +164,8 @@ router.put(
   }
 );
 
-router.delete('/:id', async (req, res) => {
+// Admin: Deactivate user
+router.delete('/:id', authenticate, async (req, res) => {
   try {
     if (req.params.id !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Forbidden' });

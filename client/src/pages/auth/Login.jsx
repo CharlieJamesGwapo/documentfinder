@@ -20,16 +20,34 @@ const Login = () => {
     setLoading(true);
     try {
       const result = await login(form);
+      
+      // Check if verification is required
       if (result?.requiresVerification) {
-        setOtpState((prev) => ({ ...prev, open: true, email: result.email, code: '' }));
+        setOtpState((prev) => ({ 
+          ...prev, 
+          open: true, 
+          email: result.email, 
+          code: '' 
+        }));
         return;
       }
 
+      // If login successful, navigate to dashboard
       if (result?.success) {
         navigate('/');
       }
     } catch (error) {
-      // toast from context will handle errors
+      // Check if error is due to unverified account (403)
+      if (error.response?.status === 403 && error.response?.data?.requiresVerification) {
+        setOtpState((prev) => ({ 
+          ...prev, 
+          open: true, 
+          email: error.response.data.email || form.email, 
+          code: '' 
+        }));
+        return;
+      }
+      // Other errors are handled by toast in context
     } finally {
       setLoading(false);
     }
@@ -62,13 +80,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-secondary px-4">
-      <div className="w-full max-w-xl rounded-3xl border border-white/5 bg-[#15161b]/95 p-10 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-secondary px-4 py-8">
+      <div className="w-full max-w-xl rounded-3xl border border-white/5 bg-[#15161b]/95 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.45)] sm:p-10">
         <div className="mb-8 flex flex-col items-center text-center">
-          <img src={logo} alt="Tesla" className="h-16 w-16 rounded-full border border-white/10 object-cover" />
+          <img src={logo} alt="Tesla" className="h-14 w-14 rounded-full border border-white/10 object-cover sm:h-16 sm:w-16" />
           <p className="mt-4 text-xs uppercase tracking-[0.35em] text-primary/80">Tesla Ops</p>
-          <h1 className="font-heading text-3xl text-white">Manufacturing & Quality Vault</h1>
-          <p className="text-sm text-slate-400">Secure access for engineers and QA</p>
+          <h1 className="font-heading text-2xl text-white sm:text-3xl">Manufacturing & Quality Vault</h1>
+          <p className="mt-2 text-sm text-slate-400">Secure access for engineers and QA</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -79,7 +97,8 @@ const Login = () => {
               value={form.email}
               onChange={(event) => handleChange('email', event.target.value)}
               required
-              className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary focus:outline-none"
+              autoComplete="email"
+              className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 transition focus:border-primary focus:outline-none"
               placeholder="engineer@tesla.com"
             />
           </label>
@@ -91,7 +110,8 @@ const Login = () => {
               value={form.password}
               onChange={(event) => handleChange('password', event.target.value)}
               required
-              className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary focus:outline-none"
+              autoComplete="current-password"
+              className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 transition focus:border-primary focus:outline-none"
               placeholder="••••••••"
             />
           </label>
@@ -100,16 +120,18 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-2xl bg-primary py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white shadow-glow transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-2xl bg-primary py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white shadow-lg shadow-primary/30 transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Authenticating…' : 'Enter Vault'}
             </button>
-            <p className="text-center text-sm text-slate-400">
-              Need access?{' '}
-              <Link to="/register" className="text-primary underline-offset-4 hover:underline">
-                Create an account
-              </Link>
-            </p>
+            <div className="flex flex-col gap-3 text-center text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                Need access?{' '}
+                <Link to="/register" className="text-primary transition hover:text-primary/80">
+                  Create an account
+                </Link>
+              </p>
+            </div>
           </div>
         </form>
       </div>

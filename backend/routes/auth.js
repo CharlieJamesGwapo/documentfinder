@@ -377,4 +377,47 @@ router.post(
   }
 );
 
+router.post(
+  '/change-password',
+  [
+    body('currentPassword').notEmpty().withMessage('Current password required'),
+    body('newPassword').isLength({ min: 6 }).withMessage('New password min 6 chars')
+  ],
+  authenticate,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const user = await User.scope('withPassword').findByPk(req.user.id);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const isMatch = await user.comparePassword(currentPassword);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Current password is incorrect' });
+      }
+
+      await user.update({ password: newPassword });
+
+      await logAudit({
+        userId: user.id,
+        action: 'PASSWORD_CHANGED',
+        description: `${user.name} changed their password`,
+        ipAddress: req.ip
+      });
+
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      console.error('Change password error:', error);
+      res.status(500).json({ message: 'Unable to change password' });
+    }
+  }
+);
+
 export default router;

@@ -4,6 +4,7 @@ import Layout from './components/layout/Layout.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
+import Profile from './pages/dashboard/Profile.jsx';
 import LoadingScreen from './components/common/LoadingScreen.jsx';
 
 const ProtectedRoute = ({ children }) => {
@@ -60,6 +61,14 @@ const App = () => (
         <AuthRoute>
           <Register />
         </AuthRoute>
+      )}
+    />
+    <Route
+      path="/profile"
+      element={(
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
       )}
     />
     <Route path="*" element={<Navigate to="/" replace />} />
