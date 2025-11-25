@@ -26,12 +26,23 @@ const hashOtp = (code) => crypto.createHash('sha256').update(code).digest('hex')
 const otpExpiryDate = () => new Date(Date.now() + OTP_EXPIRATION_MINUTES * 60 * 1000);
 
 const sendAndStoreOtp = async ({ user, code = generateOtp(), isRegistration = false }) => {
+  // Generate a verification token for email link
+  const verificationToken = crypto.randomBytes(32).toString('hex');
+  
   await user.update({
     verificationCode: hashOtp(code),
-    verificationExpires: otpExpiryDate()
+    verificationExpires: otpExpiryDate(),
+    verificationToken: hashOtp(verificationToken),
+    verificationTokenExpires: otpExpiryDate()
   });
 
-  await sendOtpEmail({ to: user.email, code, name: user.name, isRegistration });
+  await sendOtpEmail({ 
+    to: user.email, 
+    code, 
+    name: user.name, 
+    isRegistration,
+    verificationToken 
+  });
   return code;
 };
 
@@ -288,6 +299,65 @@ router.post(
     } catch (error) {
       console.error('Resend OTP error:', error);
       res.status(500).json({ message: 'Unable to resend code' });
+    }
+  }
+);
+
+router.get(
+  '/verify-email',
+  [
+    body('token').notEmpty().withMessage('Token required'),
+    body('email').isEmail().withMessage('Valid email required')
+  ],
+  async (req, res) => {
+    try {
+      const { token, email } = req.query;
+
+      if (!token || !email) {
+        return res.status(400).json({ message: 'Invalid verification link' });
+      }
+
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        return res.status(404).json({ message: 'Account not found' });
+      }
+
+      if (user.isVerified) {
+        return res.json({ message: 'Account already verified', alreadyVerified: true });
+      }
+
+      const hashedToken = hashOtp(token);
+      if (user.verificationToken !== hashedToken || user.verificationTokenExpires < new Date()) {
+        return res.status(400).json({ message: 'Verification link expired or invalid' });
+      }
+
+      await user.update({
+        isVerified: true,
+        verificationCode: null,
+        verificationExpires: null,
+        verificationToken: null,
+        verificationTokenExpires: null
+      });
+
+      const safeUser = await User.findByPk(user.id);
+      const token_jwt = signToken(safeUser);
+
+      await logAudit({
+        userId: user.id,
+        action: 'USER_VERIFIED_EMAIL',
+        description: `${user.name} verified their email via link`,
+        ipAddress: req.ip
+      });
+
+      res.json({ 
+        message: 'Account verified successfully!',
+        token: token_jwt, 
+        user: safeUser 
+      });
+    } catch (error) {
+      console.error('Email verification error:', error);
+      res.status(500).json({ message: 'Unable to verify email' });
     }
   }
 );

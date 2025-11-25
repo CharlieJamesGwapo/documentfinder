@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) => {
+export const sendOtpEmail = async ({ to, code, name, isRegistration = false, verificationToken = null }) => {
   if (!MAIL_USER || !MAIL_PASS) {
     console.error('❌ Email credentials missing:', { MAIL_USER, MAIL_PASS: MAIL_PASS ? '***' : 'missing' });
     throw new Error('Email credentials are not configured');
@@ -27,8 +27,13 @@ export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) =
     : 'Verify your workspace access';
 
   const description = isRegistration
-    ? `Hi ${name || 'there'},<br><br>Thank you for registering! To complete your account setup and gain full access to the Manufacturing & Quality Vault, please verify your email using the code below.`
+    ? `Hi ${name || 'there'},<br><br>Thank you for registering! To complete your account setup and gain full access to the Manufacturing & Quality Vault, you can verify your email by clicking the button below or using the code.`
     : `Hi ${name || 'there'},<br><br>Use the one-time passcode below to verify your account. The code expires in 15 minutes.`;
+
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const verifyLink = verificationToken 
+    ? `${frontendUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(to)}`
+    : null;
 
   const html = `
     <div style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; padding: 24px; background: #0b0c10; color: #f9fafb;">
@@ -38,6 +43,15 @@ export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) =
         </div>
         <h1 style="margin: 0 0 16px 0; font-size: 24px; color: #fff; text-align: center;">${title}</h1>
         <p style="color: #cbd5f5; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0;">${description}</p>
+        
+        ${verifyLink ? `
+        <div style="margin: 24px 0; text-align: center;">
+          <a href="${verifyLink}" style="display: inline-block; background: #ff3c2f; color: white; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; transition: background 0.3s;">
+            ✓ Verify My Account
+          </a>
+          <p style="color: #8794b4; font-size: 12px; margin: 12px 0 0 0;">Or use the code below if the button doesn't work</p>
+        </div>
+        ` : ''}
         
         <div style="margin: 32px 0; text-align: center;">
           <p style="color: #8794b4; font-size: 13px; margin: 0 0 12px 0;">One-time verification code</p>
@@ -50,6 +64,7 @@ export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) =
         <div style="background: #0f1118; border-left: 3px solid #ff3c2f; padding: 16px; border-radius: 8px; margin: 24px 0;">
           <p style="color: #cbd5f5; font-size: 14px; margin: 0;"><strong>How to verify:</strong></p>
           <ol style="color: #cbd5f5; font-size: 14px; margin: 8px 0 0 0; padding-left: 20px;">
+            <li>${verifyLink ? 'Click the "Verify My Account" button above, OR' : ''}</li>
             <li>Go back to Tesla Ops</li>
             <li>Enter the 6-digit code above</li>
             <li>Click "Verify Account"</li>

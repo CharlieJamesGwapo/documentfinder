@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext.jsx';
 import Layout from './components/layout/Layout.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
+import VerifyEmail from './pages/auth/VerifyEmail.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import Profile from './pages/dashboard/Profile.jsx';
 import LoadingScreen from './components/common/LoadingScreen.jsx';
@@ -62,6 +63,10 @@ const App = () => (
           <Register />
         </AuthRoute>
       )}
+    />
+    <Route
+      path="/verify-email"
+      element={<VerifyEmail />}
     />
     <Route
       path="/profile"
