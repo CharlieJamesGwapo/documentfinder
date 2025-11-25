@@ -113,11 +113,22 @@ const Register = () => {
 
       await Swal.fire({
         icon: 'success',
-        title: 'Registration received',
-        text: 'Check your email for the OTP code. Redirecting to login…',
+        title: '🎉 Account Created Successfully!',
+        html: `
+          <div style="text-align: left; color: #cbd5f5;">
+            <p style="margin: 12px 0; font-size: 15px;">Welcome to Tesla Ops!</p>
+            <div style="background: #0f1118; border-left: 3px solid #ff3c2f; padding: 12px; border-radius: 6px; margin: 16px 0; text-align: left;">
+              <p style="margin: 0 0 8px 0; font-weight: bold; color: #fff;">📧 Verification Email Sent</p>
+              <p style="margin: 0; font-size: 14px;">Check your inbox for a verification code. Use it to complete your registration.</p>
+            </div>
+            <p style="margin: 12px 0; font-size: 14px; color: #8794b4;">You'll be redirected to login in 3 seconds...</p>
+          </div>
+        `,
         timer: 3000,
         timerProgressBar: true,
-        showConfirmButton: false
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false
       });
       navigate('/login');
     } catch (error) {

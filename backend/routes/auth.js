@@ -25,13 +25,13 @@ const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString()
 const hashOtp = (code) => crypto.createHash('sha256').update(code).digest('hex');
 const otpExpiryDate = () => new Date(Date.now() + OTP_EXPIRATION_MINUTES * 60 * 1000);
 
-const sendAndStoreOtp = async ({ user, code = generateOtp() }) => {
+const sendAndStoreOtp = async ({ user, code = generateOtp(), isRegistration = false }) => {
   await user.update({
     verificationCode: hashOtp(code),
     verificationExpires: otpExpiryDate()
   });
 
-  await sendOtpEmail({ to: user.email, code, name: user.name });
+  await sendOtpEmail({ to: user.email, code, name: user.name, isRegistration });
   return code;
 };
 
@@ -122,8 +122,8 @@ router.post(
         return res.status(500).json({ message: 'Unable to process profile photo. Please retry with a smaller image.' });
       }
 
-      console.log('📧 Sending OTP email to:', user.email);
-      await sendOtpEmail({ to: user.email, code: otp, name: user.name });
+      console.log('📧 Sending registration OTP email to:', user.email);
+      await sendOtpEmail({ to: user.email, code: otp, name: user.name, isRegistration: true });
       await logAudit({
         userId: user.id,
         action: 'USER_REGISTERED',
