@@ -40,7 +40,8 @@ export default (sequelize) => {
     },
     name: {
       type: DataTypes.STRING(80),
-      allowNull: false
+      allowNull: true,
+      defaultValue: 'User'
     },
     email: {
       type: DataTypes.STRING(120),
@@ -89,8 +90,10 @@ export default (sequelize) => {
     }
   }, {
     hooks: {
-      async beforeCreate(user) {
+      beforeValidate: (user) => {
         composeFullName(user);
+      },
+      async beforeCreate(user) {
         if (user.password) {
           const salt = await bcrypt.genSalt(10);
           // eslint-disable-next-line no-param-reassign
@@ -98,7 +101,6 @@ export default (sequelize) => {
         }
       },
       async beforeUpdate(user) {
-        composeFullName(user);
         if (user.changed('password')) {
           const salt = await bcrypt.genSalt(10);
           // eslint-disable-next-line no-param-reassign

@@ -38,10 +38,10 @@ const sendAndStoreOtp = async ({ user, code = generateOtp() }) => {
 router.post(
   '/register',
   [
-    body('firstName').trim().isLength({ min: 2 }).withMessage('First name required'),
-    body('middleName').trim().isLength({ min: 2 }).withMessage('Middle name required'),
-    body('lastName').trim().isLength({ min: 2 }).withMessage('Last name required'),
-    body('suffix').optional().isLength({ max: 30 }).withMessage('Suffix too long'),
+    body('firstName').trim().notEmpty().withMessage('First name required'),
+    body('middleName').trim().optional({ checkFalsy: true }),
+    body('lastName').trim().notEmpty().withMessage('Last name required'),
+    body('suffix').trim().optional({ checkFalsy: true }),
     body('email').isEmail().withMessage('Valid email required'),
     body('password').isLength({ min: 6 }).withMessage('Password min 6 chars'),
     body('role').optional().isIn(['admin', 'user']).withMessage('Role invalid'),
@@ -50,6 +50,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -64,6 +65,9 @@ router.post(
         role,
         photoData
       } = req.body;
+
+      console.log('📝 Registration attempt:', { firstName, middleName, lastName, suffix, email, role });
+
       const existing = await User.scope('withPassword').findOne({ where: { email } });
       if (existing) {
         return res.status(409).json({ message: 'Email already in use' });
@@ -74,11 +78,26 @@ router.post(
       }
 
       const otp = generateOtp();
+      console.log('🔐 Creating user with OTP:', otp);
+
+      // Compose full name before creating user to ensure it's not null
+      const nameParts = [firstName, middleName, lastName]
+        .map((part) => (part || '').trim())
+        .filter(Boolean);
+      let composedName = nameParts.join(' ');
+      if (suffix) {
+        composedName = `${composedName}, ${suffix.trim()}`;
+      }
+      composedName = composedName.trim() || 'User';
+
+      console.log('📝 Composed name:', composedName);
+
       const user = await User.create({
-        firstName,
-        middleName,
-        lastName,
-        suffix,
+        firstName: firstName || '',
+        middleName: middleName || '',
+        lastName: lastName || '',
+        suffix: suffix || '',
+        name: composedName,
         email,
         password,
         role: role === 'admin' ? 'admin' : 'user',
@@ -86,19 +105,24 @@ router.post(
         verificationExpires: otpExpiryDate()
       });
 
+      console.log('✅ User created:', user.id, 'Full name:', user.name);
+
       try {
+        console.log('📸 Uploading photo to Cloudinary...');
         const upload = await cloudinary.uploader.upload(photoData, {
           folder: 'document-finder/users',
           resource_type: 'image',
           transformation: [{ width: 600, height: 600, crop: 'fill', gravity: 'face', quality: 'auto' }]
         });
+        console.log('✅ Photo uploaded:', upload.public_id);
         await user.update({ photoUrl: upload.secure_url, photoPublicId: upload.public_id });
       } catch (uploadError) {
+        console.error('❌ Photo upload error:', uploadError?.message || uploadError);
         await user.destroy();
-        console.error('Photo upload error:', uploadError?.message || uploadError);
         return res.status(500).json({ message: 'Unable to process profile photo. Please retry with a smaller image.' });
       }
 
+      console.log('📧 Sending OTP email to:', user.email);
       await sendOtpEmail({ to: user.email, code: otp, name: user.name });
       await logAudit({
         userId: user.id,
@@ -107,13 +131,14 @@ router.post(
         ipAddress: req.ip
       });
 
+      console.log('✅ Registration complete for:', user.email);
       res.status(201).json({
         requiresVerification: true,
         email: user.email
       });
     } catch (error) {
-      console.error('Register error:', error);
-      res.status(500).json({ message: 'Server error' });
+      console.error('❌ Register error:', error.message, error.stack);
+      res.status(500).json({ message: 'Server error: ' + error.message });
     }
   }
 );
