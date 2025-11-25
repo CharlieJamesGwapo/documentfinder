@@ -123,7 +123,12 @@ router.post(
       }
 
       console.log('📧 Sending registration OTP email to:', user.email);
-      await sendAndStoreOtp({ user, isRegistration: true });
+      try {
+        await sendAndStoreOtp({ user, isRegistration: true });
+      } catch (emailError) {
+        console.warn('⚠️ Email failed but registration continues:', emailError.message);
+      }
+      
       await logAudit({
         userId: user.id,
         action: 'USER_REGISTERED',
@@ -168,7 +173,11 @@ router.post(
       }
 
       if (!user.isVerified) {
-        await sendAndStoreOtp({ user });
+        try {
+          await sendAndStoreOtp({ user });
+        } catch (emailError) {
+          console.warn('⚠️ Email failed but OTP stored:', emailError.message);
+        }
         return res.status(403).json({
           message: 'Account not verified. A fresh code was sent to your email.',
           requiresVerification: true,
@@ -275,7 +284,11 @@ router.post(
         return res.status(400).json({ message: 'Account already verified' });
       }
 
-      await sendAndStoreOtp({ user });
+      try {
+        await sendAndStoreOtp({ user });
+      } catch (emailError) {
+        console.warn('⚠️ Email failed but OTP stored:', emailError.message);
+      }
 
       await logAudit({
         userId: user.id,

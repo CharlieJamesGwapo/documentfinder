@@ -5,10 +5,20 @@ const MAIL_PASS = process.env.MAILER_PASS;
 const MAIL_FROM = process.env.MAILER_FROM || MAIL_USER;
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: MAIL_USER,
     pass: MAIL_PASS
+  },
+  connectionTimeout: 10000,
+  socketTimeout: 10000,
+  pool: {
+    maxConnections: 5,
+    maxMessages: 100,
+    rateDelta: 2000,
+    rateLimit: 5
   }
 });
 
@@ -69,16 +79,26 @@ export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) =
 
   try {
     console.log('📧 Sending OTP email to:', to, '(Registration:', isRegistration, ')');
-    const info = await transporter.sendMail({
+    
+    // Create a timeout promise
+    const emailPromise = transporter.sendMail({
       from: MAIL_FROM,
       to,
       subject,
       html
     });
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Email send timeout')), 15000)
+    );
+
+    const info = await Promise.race([emailPromise, timeoutPromise]);
     console.log('✅ Email sent successfully:', info.messageId);
     return info;
   } catch (error) {
     console.error('❌ Email send failed:', error.message);
-    throw error;
+    // Don't throw - log and continue so registration doesn't fail
+    console.warn('⚠️ Continuing despite email error - user can still verify later');
+    return { messageId: 'failed-' + Date.now(), error: error.message };
   }
 };
