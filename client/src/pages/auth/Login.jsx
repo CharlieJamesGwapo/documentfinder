@@ -59,6 +59,28 @@ const Login = () => {
     try {
       await verifyOtp({ email: otpState.email, code: otpState.code });
       setOtpState({ open: false, email: '', code: '', verifying: false, resending: false });
+      
+      // Show success message and close modal
+      const Swal = (await import('sweetalert2')).default;
+      await Swal.fire({
+        icon: 'success',
+        title: '✅ Verification Successful!',
+        html: `
+          <div style="text-align: center; color: #cbd5f5;">
+            <p style="margin: 12px 0; font-size: 15px;">Your account has been verified.</p>
+            <div style="background: #0f1118; border-left: 3px solid #10b981; padding: 12px; border-radius: 6px; margin: 16px 0;">
+              <p style="margin: 0; font-size: 14px; color: #10b981;">✓ You can now access the dashboard</p>
+            </div>
+            <p style="margin: 12px 0; font-size: 12px; color: #546389;">Redirecting to dashboard...</p>
+          </div>
+        `,
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false
+      });
+      
       navigate('/');
     } catch (error) {
       // toast shows error

@@ -29,13 +29,17 @@ const mapEmbedSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, verifyOtp } = useAuth();
   const [form, setForm] = useState(initialForm);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [photoData, setPhotoData] = useState('');
   const [cameraOpen, setCameraOpen] = useState(false);
   const [photoError, setPhotoError] = useState('');
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [otpLoading, setOtpLoading] = useState(false);
   const webcamRef = useRef(null);
 
   const handleChange = (field, value) => {
@@ -107,21 +111,39 @@ const Register = () => {
         photoData
       };
 
-      await register(payload);
+      const result = await register(payload);
       setForm(initialForm);
       setPhotoData('');
+      setRegisteredEmail(result.email);
+      setShowOtpModal(true);
+    } catch (error) {
+      // toast handled inside context
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleOtpSubmit = async () => {
+    if (!otpCode || otpCode.length !== 6) {
+      toast.error('Please enter a valid 6-digit code');
+      return;
+    }
+
+    setOtpLoading(true);
+    try {
+      await verifyOtp({ email: registeredEmail, code: otpCode });
+      
       await Swal.fire({
         icon: 'success',
-        title: '🎉 Account Created Successfully!',
+        title: '✅ Account Verified Successfully!',
         html: `
-          <div style="text-align: left; color: #cbd5f5;">
-            <p style="margin: 12px 0; font-size: 15px;">Welcome to Tesla Ops!</p>
-            <div style="background: #0f1118; border-left: 3px solid #ff3c2f; padding: 12px; border-radius: 6px; margin: 16px 0; text-align: left;">
-              <p style="margin: 0 0 8px 0; font-weight: bold; color: #fff;">📧 Verification Email Sent</p>
-              <p style="margin: 0; font-size: 14px;">Check your inbox for a verification code. Use it to complete your registration.</p>
+          <div style="text-align: center; color: #cbd5f5;">
+            <p style="margin: 12px 0; font-size: 15px;">Your account is now ready to use.</p>
+            <div style="background: #0f1118; border-left: 3px solid #10b981; padding: 12px; border-radius: 6px; margin: 16px 0;">
+              <p style="margin: 0; font-size: 14px; color: #10b981;">✓ Verification Complete</p>
             </div>
-            <p style="margin: 12px 0; font-size: 14px; color: #8794b4;">You'll be redirected to login in 3 seconds...</p>
+            <p style="margin: 12px 0; font-size: 14px; color: #8794b4;">You can now log in with your credentials.</p>
+            <p style="margin: 12px 0; font-size: 12px; color: #546389;">Redirecting to login...</p>
           </div>
         `,
         timer: 3000,
@@ -130,11 +152,12 @@ const Register = () => {
         allowOutsideClick: false,
         allowEscapeKey: false
       });
+
       navigate('/login');
     } catch (error) {
-      // toast handled inside context
+      toast.error('Invalid or expired code. Please try again.');
     } finally {
-      setLoading(false);
+      setOtpLoading(false);
     }
   };
 
@@ -403,6 +426,53 @@ const Register = () => {
                 Cancel
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showOtpModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0e0f13] p-8 text-white shadow-[0_25px_90px_rgba(0,0,0,0.65)]">
+            <div className="mb-6 text-center">
+              <p className="text-xs uppercase tracking-[0.4em] text-primary/80">Verify Access</p>
+              <h3 className="font-heading text-2xl">Enter your code</h3>
+            </div>
+
+            <p className="mb-4 text-center text-sm text-slate-400">
+              We emailed a six-digit code to<br />
+              <span className="font-semibold text-white">{registeredEmail}</span>
+            </p>
+
+            <div className="mb-6">
+              <label className="mb-2 block text-sm text-slate-300">One-time passcode</label>
+              <input
+                type="text"
+                maxLength="6"
+                placeholder="000000"
+                value={otpCode}
+                onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-4 text-center text-3xl tracking-widest text-white placeholder:text-slate-600 focus:border-primary focus:outline-none"
+              />
+              <p className="mt-2 text-xs text-slate-500">Codes expire after 15 minutes. Request a new one if needed.</p>
+            </div>
+
+            <button
+              onClick={handleOtpSubmit}
+              disabled={otpLoading || otpCode.length !== 6}
+              className="w-full rounded-2xl bg-primary py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {otpLoading ? 'Verifying...' : 'Verify Account'}
+            </button>
+
+            <button
+              onClick={() => {
+                setShowOtpModal(false);
+                setOtpCode('');
+              }}
+              className="mt-3 w-full rounded-2xl border border-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-slate-300 transition hover:border-primary hover:text-white"
+            >
+              Back to Register
+            </button>
           </div>
         </div>
       )}
