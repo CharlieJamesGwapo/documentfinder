@@ -51,11 +51,11 @@ const DocumentUpload = ({ onUploaded, categorySuggestions = [] }) => {
   };
 
   return (
-    <section className="rounded-2xl border border-white/5 bg-gradient-to-br from-[#1f2026] to-[#15161b] p-6 shadow-glow">
+    <section className="rounded-2xl border border-white/5 bg-gradient-to-br from-[#1f2026] to-[#15161b] p-4 shadow-glow sm:p-6">
       <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Upload</p>
-      <h3 className="mb-6 font-heading text-2xl text-white">New instruction</h3>
+      <h3 className="mb-4 font-heading text-xl text-white sm:mb-6 sm:text-2xl">New instruction</h3>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
         <label className="space-y-2 text-sm">
           <span className="text-slate-300">Title</span>
           <input
@@ -79,7 +79,7 @@ const DocumentUpload = ({ onUploaded, categorySuggestions = [] }) => {
           />
         </label>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm">
             <span className="text-slate-300">Type</span>
             <select

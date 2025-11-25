@@ -140,14 +140,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6 sm:space-y-8">
       {/* Stats Grid - Full Width */}
       <div>
         <StatsGrid overview={overview} loading={loadingOverview} />
       </div>
 
       {/* Main Content - Responsive Grid */}
-      <div className="grid gap-8 lg:grid-cols-4">
+      <div className="grid gap-6 sm:gap-8 lg:grid-cols-4">
         {/* Sidebar - Filters and Upload */}
         <div className="space-y-6 lg:col-span-1">
           <DocumentFilters
