@@ -169,12 +169,11 @@ const Register = () => {
                   />
                 </label>
                 <label className="space-y-2 text-sm">
-                  <span className="text-slate-300">Middle name</span>
+                  <span className="text-slate-300">Middle name (optional)</span>
                   <input
                     type="text"
                     value={form.middleName}
                     onChange={(event) => handleChange('middleName', event.target.value)}
-                    required
                     placeholder="Quality"
                     className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 focus:border-primary focus:outline-none"
                   />
