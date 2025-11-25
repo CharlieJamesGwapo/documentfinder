@@ -38,7 +38,10 @@ router.get('/:id', async (req, res) => {
 router.put(
   '/:id',
   [
-    body('name').optional().isLength({ min: 2 }).withMessage('Name too short'),
+    body('firstName').optional().isLength({ min: 2 }).withMessage('First name too short'),
+    body('middleName').optional().isLength({ min: 2 }).withMessage('Middle name too short'),
+    body('lastName').optional().isLength({ min: 2 }).withMessage('Last name too short'),
+    body('suffix').optional().isLength({ max: 30 }).withMessage('Suffix too long'),
     body('email').optional().isEmail().withMessage('Email invalid'),
     body('role').optional().isIn(['admin', 'user']).withMessage('Role invalid')
   ],
@@ -59,13 +62,20 @@ router.put(
       }
 
       const payload = {
-        name: req.body.name ?? user.name,
+        firstName: req.body.firstName ?? user.firstName,
+        middleName: req.body.middleName ?? user.middleName,
+        lastName: req.body.lastName ?? user.lastName,
+        suffix: req.body.suffix ?? user.suffix,
         email: req.body.email ?? user.email,
         isActive: req.body.isActive ?? user.isActive
       };
 
       if (req.body.role && req.user.role === 'admin') {
         payload.role = req.body.role;
+      }
+
+      if (req.body.photoUrl) {
+        payload.photoUrl = req.body.photoUrl;
       }
 
       if (req.body.password) {

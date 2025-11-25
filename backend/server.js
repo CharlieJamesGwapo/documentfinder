@@ -21,26 +21,48 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'http://localhost:3000'
-];
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const renderUrl = process.env.RENDER_EXTERNAL_URL;
 
-const corsOptions = {
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+const buildCorsOriginValidator = () => {
+  const staticOrigins = new Set([
+    frontendUrl,
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://localhost:5173'
+  ]);
+
+  if (renderUrl) {
+    staticOrigins.add(renderUrl);
+  }
+
+  const allowSubdomainOfRender = (origin) => {
+    if (!renderUrl) return false;
+    try {
+      const renderHost = new URL(renderUrl).hostname;
+      const originHost = new URL(origin).hostname;
+      return originHost === renderHost || originHost.endsWith(`.${renderHost}`);
+    } catch (error) {
+      return false;
+    }
+  };
+
+  return (origin, callback) => {
+    if (!origin || staticOrigins.has(origin) || allowSubdomainOfRender(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  },
-  credentials: true
+  };
 };
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: buildCorsOriginValidator(),
+  credentials: true
+}));
 app.use(helmet());
 app.use(compression());
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
@@ -74,7 +96,7 @@ const bootstrap = async () => {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connection established');
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     server.listen(PORT, () => {
       console.log(`🚀 Server listening on port ${PORT}`);
     });

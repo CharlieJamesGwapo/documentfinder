@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import logo from '../../assets/tesla.jpg';
+import VerificationModal from '../../components/auth/VerificationModal.jsx';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, verifyOtp, resendOtp } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [otpState, setOtpState] = useState({ open: false, email: '', code: '', verifying: false, resending: false });
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -17,12 +19,45 @@ const Login = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      await login(form);
-      navigate('/');
+      const result = await login(form);
+      if (result?.requiresVerification) {
+        setOtpState((prev) => ({ ...prev, open: true, email: result.email, code: '' }));
+        return;
+      }
+
+      if (result?.success) {
+        navigate('/');
+      }
     } catch (error) {
       // toast from context will handle errors
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otpState.email || otpState.code.length !== 6) return;
+    setOtpState((prev) => ({ ...prev, verifying: true }));
+    try {
+      await verifyOtp({ email: otpState.email, code: otpState.code });
+      setOtpState({ open: false, email: '', code: '', verifying: false, resending: false });
+      navigate('/');
+    } catch (error) {
+      // toast shows error
+    } finally {
+      setOtpState((prev) => ({ ...prev, verifying: false }));
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (!otpState.email) return;
+    setOtpState((prev) => ({ ...prev, resending: true }));
+    try {
+      await resendOtp(otpState.email);
+    } catch (error) {
+      // toast already displayed
+    } finally {
+      setOtpState((prev) => ({ ...prev, resending: false }));
     }
   };
 
@@ -61,15 +96,35 @@ const Login = () => {
             />
           </label>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-4 w-full rounded-2xl bg-primary py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white shadow-glow transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {loading ? 'Authenticating…' : 'Enter Vault'}
-          </button>
+          <div className="space-y-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-2xl bg-primary py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white shadow-glow transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {loading ? 'Authenticating…' : 'Enter Vault'}
+            </button>
+            <p className="text-center text-sm text-slate-400">
+              Need access?{' '}
+              <Link to="/register" className="text-primary underline-offset-4 hover:underline">
+                Create an account
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
+
+      <VerificationModal
+        open={otpState.open}
+        email={otpState.email}
+        code={otpState.code}
+        onCodeChange={(value) => setOtpState((prev) => ({ ...prev, code: value }))}
+        onVerify={handleVerifyOtp}
+        onResend={handleResendOtp}
+        verifying={otpState.verifying}
+        resending={otpState.resending}
+        onClose={() => setOtpState({ open: false, email: '', code: '', verifying: false, resending: false })}
+      />
     </div>
   );
 };

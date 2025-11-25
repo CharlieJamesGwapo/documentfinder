@@ -5,7 +5,10 @@ import { sequelize, User, Document } from '../models/index.js';
 dotenv.config();
 
 const SAMPLE_USER = {
-  name: 'Demo Admin',
+  firstName: 'Demo',
+  middleName: 'Ops',
+  lastName: 'Admin',
+  suffix: '',
   email: 'demo.admin@tesla.com',
   password: 'DemoPass123!',
   role: 'admin'
@@ -69,7 +72,8 @@ const fetchSize = async (url) => {
 
 const main = async () => {
   await sequelize.authenticate();
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
+  console.log('Database schema synced with latest User fields');
 
   let user = await User.findOne({ where: { email: SAMPLE_USER.email }, paranoid: false });
   if (!user) {

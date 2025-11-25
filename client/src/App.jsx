@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './context/AuthContext.jsx';
 import Layout from './components/layout/Layout.jsx';
 import Login from './pages/auth/Login.jsx';
+import Register from './pages/auth/Register.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import LoadingScreen from './components/common/LoadingScreen.jsx';
 
@@ -50,6 +51,14 @@ const App = () => (
       element={(
         <AuthRoute>
           <Login />
+        </AuthRoute>
+      )}
+    />
+    <Route
+      path="/register"
+      element={(
+        <AuthRoute>
+          <Register />
         </AuthRoute>
       )}
     />

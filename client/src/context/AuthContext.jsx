@@ -41,9 +41,18 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem(TOKEN_KEY, data.token);
       setUser(data.user);
       toast.success('Welcome back!');
-      return data.user;
+      return { success: true, user: data.user };
     } catch (error) {
-      const message = error.response?.data?.message || 'Unable to sign in';
+      const response = error.response?.data;
+      if (response?.requiresVerification) {
+        toast.error(response?.message || 'Account needs verification. Check your email.');
+        return {
+          requiresVerification: true,
+          email: response.email
+        };
+      }
+
+      const message = response?.message || 'Unable to sign in';
       toast.error(message);
       throw error;
     }
@@ -52,13 +61,36 @@ export const AuthProvider = ({ children }) => {
   const register = async (payload) => {
     try {
       const { data } = await api.post('/auth/register', payload);
+      toast.success('Account created. Check your email for the verification code.');
+      return data;
+    } catch (error) {
+      const message = error.response?.data?.message || 'Unable to register';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const verifyOtp = async ({ email, code }) => {
+    try {
+      const { data } = await api.post('/auth/verify-otp', { email, code });
       setAuthToken(data.token);
       localStorage.setItem(TOKEN_KEY, data.token);
       setUser(data.user);
-      toast.success('Account created');
+      toast.success('Verification successful');
       return data.user;
     } catch (error) {
-      const message = error.response?.data?.message || 'Unable to register';
+      const message = error.response?.data?.message || 'Unable to verify code';
+      toast.error(message);
+      throw error;
+    }
+  };
+
+  const resendOtp = async (email) => {
+    try {
+      await api.post('/auth/resend-otp', { email });
+      toast.success('A new code was sent to your inbox');
+    } catch (error) {
+      const message = error.response?.data?.message || 'Unable to resend code';
       toast.error(message);
       throw error;
     }
@@ -99,6 +131,8 @@ export const AuthProvider = ({ children }) => {
     isAdmin: user?.role === 'admin',
     login,
     register,
+    verifyOtp,
+    resendOtp,
     requestPasswordReset,
     resetPassword,
     logout,
