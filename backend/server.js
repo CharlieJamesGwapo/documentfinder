@@ -21,12 +21,23 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+app.set('trust proxy', 1);
+
+const parseOrigins = (value = '') => value
+  .split(',')
+  .map((item) => item.trim())
+  .filter(Boolean);
+
+const defaultFrontend = process.env.FRONTEND_URL || 'http://localhost:5173';
+const configuredOrigins = parseOrigins(process.env.FRONTEND_URLS || defaultFrontend);
+const extraOrigins = parseOrigins(process.env.EXTRA_ALLOWED_ORIGINS);
 const renderUrl = process.env.RENDER_EXTERNAL_URL;
+const vercelDomain = process.env.VERCEL_FRONTEND_DOMAIN;
 
 const buildCorsOriginValidator = () => {
   const staticOrigins = new Set([
-    frontendUrl,
+    ...configuredOrigins,
+    ...extraOrigins,
     'http://localhost:3000',
     'http://localhost:5173',
     'https://localhost:5173'
@@ -36,19 +47,24 @@ const buildCorsOriginValidator = () => {
     staticOrigins.add(renderUrl);
   }
 
-  const allowSubdomainOfRender = (origin) => {
-    if (!renderUrl) return false;
+  const allowSubdomain = (origin, baseUrl) => {
+    if (!baseUrl) return false;
     try {
-      const renderHost = new URL(renderUrl).hostname;
+      const baseHost = new URL(baseUrl).hostname;
       const originHost = new URL(origin).hostname;
-      return originHost === renderHost || originHost.endsWith(`.${renderHost}`);
+      return originHost === baseHost || originHost.endsWith(`.${baseHost}`);
     } catch (error) {
       return false;
     }
   };
 
   return (origin, callback) => {
-    if (!origin || staticOrigins.has(origin) || allowSubdomainOfRender(origin)) {
+    if (
+      !origin ||
+      staticOrigins.has(origin) ||
+      allowSubdomain(origin, renderUrl) ||
+      allowSubdomain(origin, vercelDomain ? `https://${vercelDomain}` : null)
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
