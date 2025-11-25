@@ -34,6 +34,12 @@ const extraOrigins = parseOrigins(process.env.EXTRA_ALLOWED_ORIGINS);
 const renderUrl = process.env.RENDER_EXTERNAL_URL;
 const vercelDomain = process.env.VERCEL_FRONTEND_DOMAIN;
 
+console.log('🔐 CORS Configuration:');
+console.log('  Configured Origins:', configuredOrigins);
+console.log('  Extra Origins:', extraOrigins);
+console.log('  Render URL:', renderUrl);
+console.log('  Vercel Domain:', vercelDomain);
+
 const buildCorsOriginValidator = () => {
   const staticOrigins = new Set([
     ...configuredOrigins,

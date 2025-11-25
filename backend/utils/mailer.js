@@ -80,25 +80,24 @@ export const sendOtpEmail = async ({ to, code, name, isRegistration = false }) =
   try {
     console.log('📧 Sending OTP email to:', to, '(Registration:', isRegistration, ')');
     
-    // Create a timeout promise
-    const emailPromise = transporter.sendMail({
+    // Send email asynchronously without waiting
+    transporter.sendMail({
       from: MAIL_FROM,
       to,
       subject,
       html
+    }).then((info) => {
+      console.log('✅ Email sent successfully:', info.messageId);
+    }).catch((error) => {
+      console.warn('⚠️ Email send failed (async):', error.message);
     });
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Email send timeout')), 15000)
-    );
-
-    const info = await Promise.race([emailPromise, timeoutPromise]);
-    console.log('✅ Email sent successfully:', info.messageId);
-    return info;
+    // Return immediately without waiting for email
+    console.log('📧 Email queued for sending');
+    return { messageId: 'queued-' + Date.now() };
   } catch (error) {
-    console.error('❌ Email send failed:', error.message);
-    // Don't throw - log and continue so registration doesn't fail
-    console.warn('⚠️ Continuing despite email error - user can still verify later');
+    console.error('❌ Email queue error:', error.message);
+    console.warn('⚠️ Continuing - user can still verify later');
     return { messageId: 'failed-' + Date.now(), error: error.message };
   }
 };
