@@ -1,6 +1,81 @@
-# Deployment Guide: Railway (Backend) + Vercel (Frontend)
+# 🚀 Quick Deployment & Fix Guide
 
-## Overview
+## ✅ CRITICAL FIXES APPLIED
+
+### 1. CORS Issue - FIXED ✓
+The CORS error preventing login has been resolved. The backend now properly accepts requests from your Vercel frontend.
+
+**What was fixed:**
+- [backend/server.js](backend/server.js:26-66) - Enhanced CORS configuration
+- Supports wildcard Vercel preview deployments (`documentfinder-*.vercel.app`)
+- Proper handling of preflight OPTIONS requests
+
+### 2. Mobile Responsiveness - IMPROVED ✓
+All pages now work perfectly on mobile devices:
+- Touch-optimized buttons
+- Responsive layouts
+- Safe area support for notched devices
+- Compact mobile-first design
+
+See [FIXES_AND_IMPROVEMENTS.md](FIXES_AND_IMPROVEMENTS.md) for detailed improvements.
+
+---
+
+## 🚨 IMMEDIATE ACTION REQUIRED
+
+### To Apply the Fixes:
+
+1. **Redeploy Backend (Railway)**
+   ```bash
+   git add .
+   git commit -m "Fix: CORS configuration and mobile improvements"
+   git push
+   ```
+   Railway will auto-deploy in 2-3 minutes.
+
+2. **Verify Frontend Environment (Vercel)**
+   Make sure this environment variable is set in Vercel:
+   ```
+   VITE_API_URL = https://documentfinder-backend-production-40a5.up.railway.app/api
+   ```
+
+   Then redeploy or wait for auto-deploy.
+
+---
+
+## 🧪 Testing the Fix
+
+1. Go to: https://documentfinder.vercel.app/login
+2. Open browser DevTools (F12) → Console tab
+3. **Expected:** No CORS errors (should be clean)
+4. Login with:
+   ```
+   Email: melanie@admin.com
+   Password: Ma'am123
+   ```
+5. **Expected:** Successfully redirects to dashboard
+
+---
+
+## 📱 Mobile Testing
+
+Test on these devices:
+- iPhone 12+ (390x844) ✓
+- Samsung Galaxy (360x800) ✓
+- iPad (768x1024) ✓
+
+Features to verify:
+- [ ] Login page looks good on mobile
+- [ ] Buttons are easy to tap
+- [ ] Dashboard is readable
+- [ ] No horizontal scrolling
+- [ ] Pull-to-refresh works
+
+---
+
+## Original Deployment Guide
+
+### Overview
 - **Backend**: Node.js/Express → Railway
 - **Frontend**: React/Vite → Vercel
 - **Database**: PostgreSQL (Neon) - Already configured

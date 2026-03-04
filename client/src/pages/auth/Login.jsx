@@ -105,20 +105,20 @@ const Login = () => {
   const [focusedField, setFocusedField] = useState(null);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-secondary">
+    <div className="relative flex min-h-screen flex-col bg-secondary safe-area-top safe-area-bottom touch-manipulation">
       {/* Animated background gradient */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl animate-pulse-slow" style={{animationDelay: '1s'}} />
       </div>
 
       {/* Main container */}
-      <div className="relative flex flex-1 flex-col items-center justify-center px-3 py-6 sm:px-4 sm:py-8 lg:px-8">
-        <div className="w-full max-w-md sm:max-w-lg">
+      <div className="relative flex flex-1 flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-8 lg:px-8">
+        <div className="w-full max-w-md sm:max-w-lg animate-fade-in">
           {/* Card */}
-          <div className="rounded-2xl border border-white/10 bg-[#0e0f13]/95 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-3xl">
+          <div className="rounded-2xl border border-white/10 bg-[#0e0f13]/95 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-3xl animate-scale-in">
             {/* Header with logo */}
-            <div className="border-b border-white/5 px-4 py-6 sm:px-8 sm:py-8 lg:py-10">
+            <div className="border-b border-white/5 px-4 py-4 sm:px-8 sm:py-8 lg:py-10">
               <div className="flex flex-col items-center text-center">
                 {/* Tesla Logo */}
                 <div className="relative mb-4 sm:mb-6">
@@ -142,7 +142,7 @@ const Login = () => {
             </div>
 
             {/* Form */}
-            <form className="space-y-4 px-4 py-6 sm:space-y-5 sm:px-8 sm:py-8" onSubmit={handleSubmit}>
+            <form className="space-y-3 px-4 py-4 sm:space-y-5 sm:px-8 sm:py-8" onSubmit={handleSubmit}>
               {/* Email Input */}
               <div className="space-y-2">
                 <label className="flex items-center justify-between text-xs font-medium text-slate-300 sm:text-sm">
@@ -160,7 +160,8 @@ const Login = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     autoComplete="email"
-                    className={`w-full rounded-lg border bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 transition-all duration-200 focus:outline-none sm:rounded-xl sm:px-5 sm:py-3.5 ${
+                    inputMode="email"
+                    className={`w-full rounded-lg border bg-black/30 px-4 py-2.5 text-sm sm:text-base text-white placeholder:text-slate-500 transition-all duration-200 focus:outline-none sm:rounded-xl sm:px-5 sm:py-3.5 touch-manipulation tap-highlight ${
                       focusedField === 'email'
                         ? 'border-primary/60 shadow-lg shadow-primary/20'
                         : 'border-white/10 hover:border-white/20'
@@ -194,7 +195,7 @@ const Login = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     autoComplete="current-password"
-                    className={`w-full rounded-lg border bg-black/30 px-4 py-3 text-white placeholder:text-slate-500 transition-all duration-200 focus:outline-none sm:rounded-xl sm:px-5 sm:py-3.5 ${
+                    className={`w-full rounded-lg border bg-black/30 px-4 py-2.5 text-sm sm:text-base text-white placeholder:text-slate-500 transition-all duration-200 focus:outline-none sm:rounded-xl sm:px-5 sm:py-3.5 touch-manipulation tap-highlight ${
                       focusedField === 'password'
                         ? 'border-primary/60 shadow-lg shadow-primary/20'
                         : 'border-white/10 hover:border-white/20'
@@ -211,7 +212,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading || !form.email || !form.password}
-                className="group relative mt-6 w-full overflow-hidden rounded-lg bg-primary py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/50 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-xl sm:py-3.5 sm:text-sm"
+                className="group relative mt-4 w-full overflow-hidden rounded-lg bg-primary py-2.5 text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/50 disabled:cursor-not-allowed disabled:opacity-50 active:scale-95 sm:rounded-xl sm:py-3.5 sm:text-sm touch-manipulation tap-highlight"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 <span className="relative flex items-center justify-center gap-2">
@@ -230,7 +231,7 @@ const Login = () => {
               </button>
 
               {/* Divider */}
-              <div className="relative my-6">
+              <div className="relative my-4 sm:my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/10" />
                 </div>
@@ -262,8 +263,8 @@ const Login = () => {
           </div>
 
           {/* Info Box - Mobile optimized */}
-          <div className="mt-4 rounded-lg border border-white/10 bg-black/30 p-3 backdrop-blur sm:mt-6 sm:rounded-xl sm:p-4">
-            <p className="text-xs text-slate-400 sm:text-sm">
+          <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-2.5 backdrop-blur sm:mt-6 sm:rounded-xl sm:p-4 animate-slide-up">
+            <p className="text-2xs sm:text-xs text-slate-400">
               <span className="font-semibold text-primary">💡 Demo Credentials:</span> Use your registered email and password to access the vault.
             </p>
           </div>

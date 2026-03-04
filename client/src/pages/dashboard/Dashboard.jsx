@@ -10,6 +10,8 @@ import RecentDocuments from '../../components/dashboard/RecentDocuments.jsx';
 import PreviewModal from '../../components/dashboard/PreviewModal.jsx';
 import AnalyticsDashboard from '../../components/dashboard/AnalyticsDashboard.jsx';
 import { downloadDocumentFile } from '../../utils/documents.js';
+import usePullToRefresh from '../../hooks/usePullToRefresh.js';
+import useSwipeGesture from '../../hooks/useSwipeGesture.js';
 
 const initialFilters = {
   search: '',
@@ -29,6 +31,36 @@ const Dashboard = () => {
   const [loadingDocuments, setLoadingDocuments] = useState(true);
   const [loadingOverview, setLoadingOverview] = useState(true);
   const [activeDocument, setActiveDocument] = useState(null);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Pull to refresh functionality
+  const refreshData = async () => {
+    await Promise.all([
+      fetchOverview(),
+      fetchDocuments(1, filters),
+      fetchReferenceData()
+    ]);
+  };
+
+  const {
+    containerRef,
+    isPulling,
+    pullDistance,
+    isRefreshing,
+    pullIndicatorOpacity,
+    shouldRefresh
+  } = usePullToRefresh(refreshData);
+
+  // Swipe gesture for mobile filters
+  const handleSwipeLeft = () => {
+    setShowMobileFilters(false);
+  };
+
+  const handleSwipeRight = () => {
+    setShowMobileFilters(true);
+  };
+
+  const swipeRef = useSwipeGesture(handleSwipeLeft, handleSwipeRight);
 
   const fetchOverview = async () => {
     try {
@@ -141,7 +173,42 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8">
+    <div className="w-full space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8" ref={containerRef}>
+      {/* Pull to Refresh Indicator */}
+      <div 
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
+        style={{ 
+          transform: `translateY(${pullDistance}px)`,
+          opacity: pullIndicatorOpacity
+        }}
+      >
+        <div className={`flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm text-primary backdrop-blur-sm ${shouldRefresh ? 'animate-bounce-gentle' : ''}`}>
+          {isRefreshing ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <span>Refreshing...</span>
+            </>
+          ) : (
+            <>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span>{shouldRefresh ? 'Release to refresh' : 'Pull to refresh'}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Filter Toggle */}
+      <div className="lg:hidden">
+        <button
+          onClick={() => setShowMobileFilters(!showMobileFilters)}
+          className="fixed bottom-4 right-4 z-40 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-lg touch-manipulation tap-highlight active:scale-95 transition-transform"
+        >
+          {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+        </button>
+      </div>
+
       {/* Stats Grid - Full Width - Responsive */}
       <div className="animate-fadeIn">
         <StatsGrid overview={overview} loading={loadingOverview} />
@@ -153,9 +220,9 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content - Responsive Grid - Mobile First */}
-      <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-4" ref={swipeRef}>
         {/* Sidebar - Filters and Upload - Collapsible on Mobile */}
-        <div className="space-y-3 sm:space-y-4 md:space-y-6 lg:col-span-1 animate-slideInLeft">
+        <div className={`space-y-3 sm:space-y-4 md:space-y-6 lg:col-span-1 animate-slideInLeft ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <DocumentFilters
             filters={filters}
             onChange={handleFilterChange}
