@@ -10,6 +10,8 @@ router.get('/', async (req, res) => {
       where: { userId: req.user.id },
       include: [{
         model: Document,
+        where: { isActive: true },
+        required: true,
         include: [{
           model: User,
           as: 'author',
@@ -61,6 +63,11 @@ router.get('/check/:documentId', async (req, res) => {
 // Toggle favorite (add if not exists, remove if exists)
 router.post('/:documentId', async (req, res) => {
   try {
+    const doc = await Document.findByPk(req.params.documentId);
+    if (!doc || !doc.isActive) {
+      return res.status(404).json({ message: 'Document not found' });
+    }
+
     const existing = await Favorite.findOne({
       where: {
         userId: req.user.id,

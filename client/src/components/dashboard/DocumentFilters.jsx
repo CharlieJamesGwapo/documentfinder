@@ -21,8 +21,9 @@ const DocumentFilters = ({ filters, onChange, onReset, categories = [], tags = [
   }, [filters.search]);
 
   useEffect(() => {
-    if (!searchInput.trim()) {
-      onChange({ search: '' });
+    const trimmed = searchInput.trim();
+    if (!trimmed) {
+      if (filters.search) onChange({ search: '' });
       setIsSearching(false);
       return;
     }

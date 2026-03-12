@@ -9,7 +9,7 @@ const useFavorites = () => {
   const fetchFavoriteIds = useCallback(async () => {
     try {
       const { data } = await api.get('/favorites/ids');
-      setFavoriteIds(new Set(data));
+      setFavoriteIds(new Set(Array.isArray(data) ? data : []));
     } catch (error) {
       console.error('Fetch favorites error:', error);
     } finally {
@@ -20,7 +20,7 @@ const useFavorites = () => {
   const fetchFavorites = useCallback(async () => {
     try {
       const { data } = await api.get('/favorites');
-      setFavorites(data.map((f) => f.Document).filter(Boolean));
+      setFavorites((Array.isArray(data) ? data : []).map((f) => f.Document).filter(Boolean));
     } catch (error) {
       console.error('Fetch full favorites error:', error);
     }

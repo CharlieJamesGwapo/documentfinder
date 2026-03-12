@@ -330,8 +330,8 @@ router.post(
           const finalType = validTypes.includes(docType) ? docType : 'MN';
           const cat = categoryIdx !== -1 ? values[categoryIdx]?.trim() : 'General';
           const desc = descIdx !== -1 ? values[descIdx]?.trim() : '';
-          const tags = tagsIdx !== -1
-            ? values[tagsIdx]?.split(';').map((t) => t.trim()).filter(Boolean)
+          const tags = tagsIdx !== -1 && values[tagsIdx]
+            ? values[tagsIdx].split(';').map((t) => t.trim()).filter(Boolean)
             : [];
           const version = versionIdx !== -1 ? values[versionIdx]?.trim() : '1.0.0';
 
@@ -623,8 +623,10 @@ router.put('/:id', authorize('admin'), async (req, res) => {
       isActive: req.body.isActive
     };
 
-    if (req.body.tags) {
-      updates.tags = req.body.tags.split(',').map((tag) => tag.trim());
+    if (req.body.tags !== undefined) {
+      updates.tags = req.body.tags
+        ? req.body.tags.split(',').map((tag) => tag.trim()).filter(Boolean)
+        : [];
     }
 
     if (req.body.textContent !== undefined) {

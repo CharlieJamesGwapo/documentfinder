@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import { Op } from 'sequelize';
 import { User } from '../models/index.js';
 import { authenticate } from '../middleware/auth.js';
 import { logAudit } from '../utils/audit.js';
@@ -383,7 +384,7 @@ router.post(
       const user = await User.scope('withPassword').findOne({
         where: {
           resetPasswordToken: hashedToken,
-          resetPasswordExpires: { [User.sequelize.Op.gt]: new Date() }
+          resetPasswordExpires: { [Op.gt]: new Date() }
         }
       });
 
