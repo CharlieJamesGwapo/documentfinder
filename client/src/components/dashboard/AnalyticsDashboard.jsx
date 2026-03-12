@@ -81,7 +81,7 @@ const AnalyticsDashboard = ({ overview, loading }) => {
                           <span>{item.icon}</span>
                           <span>{item.code}</span>
                         </span>
-                        <span className="hidden sm:inline">{item.name}</span>
+                        <span className="text-2xs sm:text-sm">{item.name}</span>
                       </span>
                       <span className={`font-semibold ${item.color.text}`}>{item.count} ({percent}%)</span>
                     </div>
@@ -147,31 +147,24 @@ const AnalyticsDashboard = ({ overview, loading }) => {
         </div>
       </div>
 
-      {/* Stats Summary - Manufacturing vs Quality + Total */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">
-        <div className="rounded-lg border border-white/5 bg-gradient-to-br from-primary/10 to-primary/5 p-3 sm:rounded-2xl sm:p-4">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Manufacturing</p>
-          <p className="mt-2 font-heading text-xl text-primary sm:text-2xl">{analytics.mfg}</p>
-          <p className="mt-1 text-xs text-slate-500">{analytics.mfgPercent}% of total</p>
-        </div>
-
-        <div className="rounded-lg border border-white/5 bg-gradient-to-br from-emerald-400/10 to-emerald-400/5 p-3 sm:rounded-2xl sm:p-4">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Quality</p>
-          <p className="mt-2 font-heading text-xl text-emerald-400 sm:text-2xl">{analytics.quality}</p>
-          <p className="mt-1 text-xs text-slate-500">{analytics.qualityPercent}% of total</p>
-        </div>
-
-        <div className="rounded-lg border border-white/5 bg-gradient-to-br from-blue-400/10 to-blue-400/5 p-3 sm:rounded-2xl sm:p-4">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Categories</p>
-          <p className="mt-2 font-heading text-xl text-blue-400 sm:text-2xl">{analytics.categories.length}</p>
-          <p className="mt-1 text-xs text-slate-500">Active groups</p>
-        </div>
-
-        <div className="rounded-lg border border-white/5 bg-gradient-to-br from-purple-400/10 to-purple-400/5 p-3 sm:rounded-2xl sm:p-4">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Doc Types</p>
-          <p className="mt-2 font-heading text-xl text-purple-400 sm:text-2xl">{analytics.typeBreakdown.length}</p>
-          <p className="mt-1 text-xs text-slate-500">Types in use</p>
-        </div>
+      {/* Document Type Cards - Full Names with Icons */}
+      <div className="grid gap-2 sm:gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        {Object.values(DOCUMENT_TYPES).map((dt) => {
+          const match = analytics.typeBreakdown.find((t) => t.code === dt.code);
+          const count = match?.count ?? 0;
+          const percent = analytics.total > 0 ? Math.round((count / analytics.total) * 100) : 0;
+          return (
+            <div key={dt.code} className={`rounded-xl border p-3 sm:rounded-2xl sm:p-4 transition-all hover:scale-[1.03] ${dt.color.bg} ${dt.color.border}`}>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="text-base">{dt.icon}</span>
+                <span className={`text-xs font-bold ${dt.color.text}`}>{dt.code}</span>
+              </div>
+              <p className={`font-heading text-xl sm:text-2xl ${dt.color.text}`}>{count}</p>
+              <p className="mt-0.5 text-[0.6rem] leading-tight text-slate-400 sm:text-xs">{dt.name}</p>
+              <p className="mt-0.5 text-[0.55rem] text-slate-500 sm:text-2xs">{percent}% of total</p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

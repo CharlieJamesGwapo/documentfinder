@@ -53,20 +53,20 @@ const StatsGrid = ({ overview, loading }) => (
           <StatCard
             label="Manufacturing"
             value={overview?.totals?.manufacturingCount ?? 0}
-            sublabel="Active instructions"
+            sublabel="MN + MI documents"
             loading={loading}
           />
           <StatCard
             label="Quality"
             value={overview?.totals?.qualityCount ?? 0}
-            sublabel="Inspection docs"
+            sublabel="QI + QAN documents"
             accent="quality"
             loading={loading}
           />
           <StatCard
             label="Cloud Storage"
             value={formatBytes(overview?.storageBytes)}
-            sublabel="Cloudinary usage"
+            sublabel="Total file storage"
             loading={loading}
           />
         </div>

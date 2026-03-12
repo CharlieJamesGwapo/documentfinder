@@ -227,7 +227,7 @@ const Dashboard = () => {
       </div>
 
       {/* Empty State - Seed Documents Banner */}
-      {!loadingOverview && isAdmin && overview?.totals?.totalDocuments === 0 && (
+      {!loadingOverview && isAdmin && (overview?.totals?.totalDocuments ?? 0) < 1 && (
         <div className="animate-fadeIn rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 p-4 sm:p-6">
           <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left sm:gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-2xl sm:h-14 sm:w-14">
