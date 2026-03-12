@@ -331,10 +331,12 @@ const Dashboard = () => {
             tags={tags}
             activeCount={activeFilterCount}
           />
-          <DocumentUpload
-            onUploaded={handleDocumentUploaded}
-            categorySuggestions={categories}
-          />
+          {isAdmin && (
+            <DocumentUpload
+              onUploaded={handleDocumentUploaded}
+              categorySuggestions={categories}
+            />
+          )}
         </div>
 
         {/* Main Content - Documents */}
@@ -343,8 +345,8 @@ const Dashboard = () => {
             documents={overview?.recentDocuments || []}
             onPreview={handlePreviewDocument}
             onDownload={handleDownloadDocument}
-            onEdit={handleEditDocument}
-            onDelete={handleDeleteDocument}
+            onEdit={isAdmin ? handleEditDocument : undefined}
+            onDelete={isAdmin ? handleDeleteDocument : undefined}
           />
           <DocumentTable
             documents={documents}
@@ -353,10 +355,11 @@ const Dashboard = () => {
             onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
             onPreview={handlePreviewDocument}
             onDownload={handleDownloadDocument}
-            onEdit={handleEditDocument}
-            onDelete={handleDeleteDocument}
+            onEdit={isAdmin ? handleEditDocument : undefined}
+            onDelete={isAdmin ? handleDeleteDocument : undefined}
             filters={filters}
             onImported={refreshAll}
+            isAdmin={isAdmin}
           />
         </div>
       </div>
@@ -368,13 +371,15 @@ const Dashboard = () => {
         onDownload={handleDownloadDocument}
       />
 
-      <EditDocumentModal
-        open={Boolean(editDocument)}
-        document={editDocument}
-        onClose={() => setEditDocument(null)}
-        onSaved={handleEditSaved}
-        categories={categories}
-      />
+      {isAdmin && (
+        <EditDocumentModal
+          open={Boolean(editDocument)}
+          document={editDocument}
+          onClose={() => setEditDocument(null)}
+          onSaved={handleEditSaved}
+          categories={categories}
+        />
+      )}
     </div>
   );
 };

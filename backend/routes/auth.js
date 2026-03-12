@@ -49,7 +49,7 @@ router.post(
     body('suffix').trim().optional({ checkFalsy: true }),
     body('email').isEmail().withMessage('Valid email required'),
     body('password').isLength({ min: 6 }).withMessage('Password min 6 chars'),
-    body('role').optional().isIn(['admin', 'user']).withMessage('Role invalid'),
+    // Role is always 'user' for self-registration; admins are promoted by existing admins
     body('photoData').notEmpty().withMessage('Profile photo is required')
   ],
   async (req, res) => {
@@ -67,11 +67,10 @@ router.post(
         suffix,
         email,
         password,
-        role,
         photoData
       } = req.body;
 
-      console.log('📝 Registration attempt:', { firstName, middleName, lastName, suffix, email, role });
+      console.log('📝 Registration attempt:', { firstName, middleName, lastName, suffix, email });
 
       const existing = await User.scope('withPassword').findOne({ where: { email } });
       if (existing) {
@@ -104,7 +103,7 @@ router.post(
         name: composedName,
         email,
         password,
-        role: role === 'admin' ? 'admin' : 'user',
+        role: 'user',
         isVerified: !emailConfigured
       });
 

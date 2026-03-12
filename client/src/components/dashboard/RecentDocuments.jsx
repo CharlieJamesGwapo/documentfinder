@@ -63,22 +63,26 @@ const RecentDocuments = ({ documents = [], onPreview, onDownload, onEdit, onDele
                     <Download className="h-3.5 w-3.5" />
                     <span>Download</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => onEdit?.(doc)}
-                    className="flex items-center justify-center rounded-lg border border-white/10 p-2 min-h-[40px] text-slate-400 transition hover:border-blue-400/30 hover:bg-blue-500/10 hover:text-blue-400 active:scale-95 opacity-0 group-hover:opacity-100 sm:rounded-full sm:p-1.5 sm:min-h-0 touch-manipulation"
-                    title="Edit"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onDelete?.(doc)}
-                    className="flex items-center justify-center rounded-lg border border-white/10 p-2 min-h-[40px] text-slate-400 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-400 active:scale-95 opacity-0 group-hover:opacity-100 sm:rounded-full sm:p-1.5 sm:min-h-0 touch-manipulation"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                  {onEdit && (
+                    <button
+                      type="button"
+                      onClick={() => onEdit(doc)}
+                      className="flex items-center justify-center rounded-lg border border-white/10 p-2 min-h-[40px] text-slate-400 transition hover:border-blue-400/30 hover:bg-blue-500/10 hover:text-blue-400 active:scale-95 opacity-0 group-hover:opacity-100 sm:rounded-full sm:p-1.5 sm:min-h-0 touch-manipulation"
+                      title="Edit"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  {onDelete && (
+                    <button
+                      type="button"
+                      onClick={() => onDelete(doc)}
+                      className="flex items-center justify-center rounded-lg border border-white/10 p-2 min-h-[40px] text-slate-400 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-400 active:scale-95 opacity-0 group-hover:opacity-100 sm:rounded-full sm:p-1.5 sm:min-h-0 touch-manipulation"
+                      title="Delete"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             </li>

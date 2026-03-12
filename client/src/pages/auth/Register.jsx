@@ -20,8 +20,7 @@ const initialForm = {
   suffix: '',
   email: '',
   password: '',
-  confirmPassword: '',
-  role: 'user'
+  confirmPassword: ''
 };
 
 const mapDirectionsUrl = 'https://www.google.com/maps/place/Tesla+Giga+Nevada/@39.5513997,-119.3203626,15z/data=!3m1!4b1!4m6!3m5!1s0x80991b3be3441b1f:0x356fda1546f39979!8m2!3d39.5513997!4d-119.3203626!16s%2Fg%2F11b7f5b1mz?entry=ttu';
@@ -107,7 +106,6 @@ const Register = () => {
         suffix: form.suffix,
         email: form.email,
         password: form.password,
-        role: form.role,
         photoData
       };
 
@@ -289,18 +287,12 @@ const Register = () => {
                 </label>
               </div>
 
-              <label className="space-y-2 text-sm">
-                <span className="text-slate-300">Role</span>
-                <select
-                  value={form.role}
-                  onChange={(event) => handleChange('role', event.target.value)}
-                  className="w-full rounded-2xl border border-white/5 bg-black/30 px-4 py-3 text-white focus:border-primary focus:outline-none"
-                >
-                  <option value="user">Engineer / Operator</option>
-                  <option value="admin">Admin (approval required)</option>
-                </select>
-                <p className="text-xs text-slate-500">Admin requests are reviewed before elevated access is granted.</p>
-              </label>
+              <div className="rounded-2xl border border-white/5 bg-black/20 px-4 py-3">
+                <p className="text-xs text-slate-400">
+                  You will be registered as a <span className="font-semibold text-white">Staff / Viewer</span>. You can view and download documents.
+                  Contact an admin to request elevated privileges.
+                </p>
+              </div>
 
               <div className="space-y-3 rounded-2xl border border-dashed border-white/10 bg-black/20 p-4 text-sm">
                 <div className="flex items-center justify-between text-slate-300">

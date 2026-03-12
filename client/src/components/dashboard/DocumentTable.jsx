@@ -9,7 +9,7 @@ import { SkeletonCard, SkeletonTable } from '../common/Skeleton.jsx';
 import { fetchAllAndExport, downloadImportTemplate } from '../../utils/exportDocuments.js';
 import api from '../../lib/api.js';
 
-const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview, onDownload, onEdit, onDelete, filters, onImported }) => {
+const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview, onDownload, onEdit, onDelete, filters, onImported, isAdmin }) => {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showImportMenu, setShowImportMenu] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -124,8 +124,8 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
             {pagination.total} results · Page {pagination.page} of {pagination.pages}
           </div>
 
-          {/* Import Button */}
-          <div className="relative" ref={importMenuRef}>
+          {/* Import Button - Admin Only */}
+          {isAdmin && <div className="relative" ref={importMenuRef}>
             <input type="file" ref={csvInputRef} accept=".csv" className="hidden" onChange={handleCSVImport} />
             <input type="file" ref={bulkInputRef} accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple className="hidden" onChange={handleBulkUpload} />
             <button
@@ -162,7 +162,7 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
                 </div>
               </div>
             )}
-          </div>
+          </div>}
 
           {/* Export Button */}
           <div className="relative" ref={exportMenuRef}>
@@ -278,22 +278,26 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
                           <Download className="h-3.5 w-3.5" />
                           <span className="hidden lg:inline">Download</span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => onEdit?.(doc)}
-                          className="inline-flex items-center justify-center rounded-full border border-white/10 p-1.5 text-slate-400 transition hover:border-blue-400/30 hover:bg-blue-500/10 hover:text-blue-400 active:scale-95 opacity-0 group-hover:opacity-100"
-                          title="Edit"
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => onDelete?.(doc)}
-                          className="inline-flex items-center justify-center rounded-full border border-white/10 p-1.5 text-slate-400 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-400 active:scale-95 opacity-0 group-hover:opacity-100"
-                          title="Delete"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
+                        {onEdit && (
+                          <button
+                            type="button"
+                            onClick={() => onEdit(doc)}
+                            className="inline-flex items-center justify-center rounded-full border border-white/10 p-1.5 text-slate-400 transition hover:border-blue-400/30 hover:bg-blue-500/10 hover:text-blue-400 active:scale-95 opacity-0 group-hover:opacity-100"
+                            title="Edit"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {onDelete && (
+                          <button
+                            type="button"
+                            onClick={() => onDelete(doc)}
+                            className="inline-flex items-center justify-center rounded-full border border-white/10 p-1.5 text-slate-400 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-400 active:scale-95 opacity-0 group-hover:opacity-100"
+                            title="Delete"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -119,6 +119,7 @@ const upload = multer({
 
 router.post(
   '/',
+  authorize('admin'),
   upload.single('document'),
   async (req, res) => {
     try {
@@ -182,9 +183,10 @@ router.post(
   }
 );
 
-// Bulk file upload - multiple files at once
+// Bulk file upload - multiple files at once (admin only)
 router.post(
   '/bulk-upload',
+  authorize('admin'),
   multer({
     storage,
     limits: { fileSize: 20 * 1024 * 1024 },
@@ -269,9 +271,10 @@ router.post(
   }
 );
 
-// CSV import - create documents from CSV file
+// CSV import - create documents from CSV file (admin only)
 router.post(
   '/import-csv',
+  authorize('admin'),
   multer({
     storage,
     limits: { fileSize: 5 * 1024 * 1024 },
@@ -584,16 +587,12 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authorize('admin'), async (req, res) => {
   try {
     const document = await Document.findByPk(req.params.id);
 
     if (!document) {
       return res.status(404).json({ message: 'Document not found' });
-    }
-
-    if (document.createdBy !== req.user.id && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to update this document' });
     }
 
     const updates = {
@@ -673,16 +672,12 @@ router.get('/:id/download', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authorize('admin'), async (req, res) => {
   try {
     const document = await Document.findByPk(req.params.id);
 
     if (!document) {
       return res.status(404).json({ message: 'Document not found' });
-    }
-
-    if (document.createdBy !== req.user.id && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to delete this document' });
     }
 
     await document.update({ isActive: false });

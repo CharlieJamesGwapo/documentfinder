@@ -17,25 +17,31 @@ const DocumentCard = ({ document, onPreview, onDownload, onEdit, onDelete }) => 
             <span className="truncate">{document.category}</span>
             <span className="whitespace-nowrap">{dayjs(document.createdAt).format('DD MMM YY')}</span>
           </div>
-          {/* Edit/Delete actions */}
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              type="button"
-              onClick={() => onEdit?.(document)}
-              className="rounded-lg p-1.5 text-slate-500 transition hover:bg-blue-500/10 hover:text-blue-400 active:scale-90 touch-manipulation"
-              title="Edit"
-            >
-              <Pencil className="h-3.5 w-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onDelete?.(document)}
-              className="rounded-lg p-1.5 text-slate-500 transition hover:bg-red-500/10 hover:text-red-400 active:scale-90 touch-manipulation"
-              title="Delete"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          {/* Edit/Delete actions - Admin Only */}
+          {(onEdit || onDelete) && (
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              {onEdit && (
+                <button
+                  type="button"
+                  onClick={() => onEdit(document)}
+                  className="rounded-lg p-1.5 text-slate-500 transition hover:bg-blue-500/10 hover:text-blue-400 active:scale-90 touch-manipulation"
+                  title="Edit"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  type="button"
+                  onClick={() => onDelete(document)}
+                  className="rounded-lg p-1.5 text-slate-500 transition hover:bg-red-500/10 hover:text-red-400 active:scale-90 touch-manipulation"
+                  title="Delete"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

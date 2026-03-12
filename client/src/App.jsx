@@ -37,6 +37,24 @@ const AuthRoute = ({ children }) => {
   return children;
 };
 
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 const App = () => (
   <Routes>
     <Route
@@ -79,11 +97,11 @@ const App = () => (
     <Route
       path="/users"
       element={(
-        <ProtectedRoute>
+        <AdminRoute>
           <Layout>
             <UserManagement />
           </Layout>
-        </ProtectedRoute>
+        </AdminRoute>
       )}
     />
     <Route path="*" element={<Navigate to="/" replace />} />
