@@ -841,6 +841,861 @@ Finance: APPROVED (ROI validated)
 CHANGE OWNER: General Assembly Manager
 DOCUMENT ID: PCA-2024-0015`;
 
+const MN_TEXT_3 = `MANUFACTURING NOTICE - MN-2024-0071
+SHIFT SCHEDULE CHANGE: ALL PRODUCTION LINES
+
+EFFECTIVE DATE: April 15, 2024
+PRIORITY: MEDIUM
+AFFECTED: All production employees
+
+1. NOTICE SUMMARY
+Effective April 15, 2024, production shift schedules will transition from the current 3-shift rotation (8-hour shifts) to a modified 2-shift rotation (12-hour shifts) for Lines 1-6.
+
+2. NEW SCHEDULE
+- A Shift: 6:00 AM to 6:00 PM (Mon-Wed, alternating Thu)
+- B Shift: 6:00 PM to 6:00 AM (Mon-Wed, alternating Thu)
+- C Shift: 6:00 AM to 6:00 PM (Fri-Sun)
+- D Shift: 6:00 PM to 6:00 AM (Fri-Sun)
+
+3. REASON FOR CHANGE
+- Reduce shift handoff quality escapes (currently 15% of defects occur during shift transitions)
+- Improve operator continuity on complex assemblies
+- Align with supplier delivery schedules
+- Increase weekly production capacity by 8%
+
+4. TRANSITION PLAN
+- Week 1 (April 8-12): Orientation sessions for all employees
+- Week 2 (April 15): New schedule begins, supervisors on extended overlap
+- Week 3-4: Monitor and adjust as needed
+- Break schedules: Two 30-minute paid breaks per 12-hour shift
+
+5. COMPENSATION ADJUSTMENTS
+- Overtime calculated after 40 hours per week (per state law)
+- Shift differential: 15% premium for night shifts
+- All benefits remain unchanged
+
+ISSUED BY: Human Resources & Manufacturing Operations
+APPROVED BY: VP Manufacturing`;
+
+const MN_TEXT_4 = `MANUFACTURING NOTICE - MN-2024-0085
+NEW EQUIPMENT INSTALLATION: AUTOMATED OPTICAL INSPECTION SYSTEM
+
+EFFECTIVE DATE: May 1, 2024
+PRIORITY: HIGH
+AFFECTED LINES: Lines 2, 4, 6
+
+1. NOTICE SUMMARY
+Three new Automated Optical Inspection (AOI) systems will be installed at end-of-line stations on Battery Assembly Lines 2, 4, and 6. Installation occurs during planned maintenance windows.
+
+2. EQUIPMENT DETAILS
+- System: Keyence XG-X Series Vision System
+- Cameras: 12 per station (360-degree coverage)
+- Inspection speed: < 2 seconds per module
+- Defect detection: Scratches, dents, label placement, connector seating
+
+3. INSTALLATION SCHEDULE
+- Line 6: April 22-24 (during scheduled maintenance)
+- Line 4: April 29 - May 1
+- Line 2: May 6-8
+
+4. OPERATOR IMPACT
+- No manual visual inspection required at AOI stations after go-live
+- Operators to receive 2-hour training on AOI interface and alarm response
+- Reject handling: AOI auto-diverts to rework conveyor
+- Override procedure requires supervisor authorization
+
+5. EXPECTED BENEFITS
+- 99.7% defect detection rate (current manual: 94%)
+- Consistent inspection criteria (eliminates operator variability)
+- Full traceability with image storage per unit
+- Reduced cycle time: saves 8 seconds per unit vs manual inspection
+
+ISSUED BY: Manufacturing Engineering
+APPROVED BY: Director of Manufacturing`;
+
+const MN_TEXT_5 = `MANUFACTURING NOTICE - MN-2024-0092
+PRODUCTION RAMP-UP: MODEL Y REFRESH LAUNCH
+
+EFFECTIVE DATE: June 1, 2024
+PRIORITY: HIGH
+AFFECTED: All departments
+
+1. NOTICE SUMMARY
+Production ramp for the refreshed Model Y begins June 1, 2024. All departments must be prepared for the phased production increase from current 800 units/week to 1,200 units/week by end of Q3 2024.
+
+2. RAMP SCHEDULE
+- Phase 1 (June 1-30): 850 units/week - New tooling validation
+- Phase 2 (July 1-31): 950 units/week - Process optimization
+- Phase 3 (Aug 1-31): 1,100 units/week - Full staffing deployment
+- Phase 4 (Sep 1-30): 1,200 units/week - Target rate achieved
+
+3. KEY CHANGES FOR REFRESH
+- Updated front fascia and headlamp assembly (new tooling at Station 14)
+- Revised interior trim (3 new color options)
+- New infotainment unit installation procedure
+- Updated battery pack cooling manifold (15% flow increase)
+
+4. STAFFING REQUIREMENTS
+- 35 additional operators (hiring in progress)
+- All current operators: 4-hour refresh training by May 25
+- New operators: 2-week onboarding program
+
+5. SUPPLY CHAIN READINESS
+- All refresh parts validated and in pipeline
+- 2-week safety stock target for critical components
+- Daily supplier readiness calls during Phase 1
+
+ISSUED BY: Launch Management Office
+APPROVED BY: Plant Manager`;
+
+const MI_TEXT_3 = `MANUFACTURING INSTRUCTIONS - MI-DU-0145
+DRIVE UNIT ASSEMBLY: REAR MOTOR INSTALLATION
+
+REVISION: 2.1.0
+EFFECTIVE DATE: March 2024
+WORK STATION: DU-Station 8
+
+1. PURPOSE
+Step-by-step instructions for installing the rear drive unit into the Model 3/Y subframe assembly.
+
+2. CYCLE TIME: 110 seconds
+
+3. REQUIRED TOOLS
+- Overhead gantry crane (2-ton capacity)
+- Torque wrench: 80-200 Nm range (calibrated)
+- Alignment laser tool (Part# AT-5500)
+- Drive unit lifting fixture (Part# LF-DU-200)
+- Thread locking compound (Loctite 243)
+
+4. INSTALLATION PROCEDURE
+
+Step 1: Pre-Installation Check (15 seconds)
+- Verify drive unit serial number matches build sheet
+- Inspect mounting surfaces for debris or damage
+- Confirm all protective caps removed from fluid ports
+- Check subframe alignment pins are present and undamaged
+
+Step 2: Positioning (30 seconds)
+- Attach lifting fixture to drive unit (4 mounting points)
+- Raise drive unit with gantry crane
+- Align using laser tool - front mount first, then rear
+- Lower slowly until alignment pins engage (audible click)
+
+Step 3: Fastening (40 seconds)
+- Install 4x M12 front mount bolts with thread locker
+- Torque sequence: Front-left, front-right, rear-left, rear-right
+- Torque: 120 Nm ± 5 Nm (two-pass method)
+- Install 2x M10 rear mount bolts, torque to 85 Nm ± 3 Nm
+
+Step 4: Connections (25 seconds)
+- Connect HV power cable (orange, 3-pin)
+- Connect coolant inlet hose (green tag)
+- Connect coolant outlet hose (blue tag)
+- Connect signal harness (12-pin connector)
+- Verify all connections seated with gentle tug test
+
+5. POST-INSTALLATION
+- Spin test: Rotate output shaft by hand (should turn freely)
+- Verify no coolant leaks at connections
+- Log serial numbers in MES system
+- Apply QC stamp on inspection card
+
+APPROVED BY: Powertrain Engineering Manager`;
+
+const MI_TEXT_4 = `MANUFACTURING INSTRUCTIONS - MI-PT-0067
+PAINT BOOTH OPERATION: BASECOAT APPLICATION
+
+REVISION: 5.0.0
+EFFECTIVE DATE: January 2024
+WORK AREA: Paint Shop - Booth 3
+
+1. PURPOSE
+Operating procedure for basecoat application in Paint Booth 3 using robotic spray systems.
+
+2. BOOTH SPECIFICATIONS
+- Temperature: 23°C ± 1°C
+- Humidity: 65% ± 5% RH
+- Air velocity: 0.3 m/s downward
+- Filter change interval: Every 8 hours or 200 vehicles
+
+3. PRE-OPERATION CHECKLIST
+[ ] Booth temperature and humidity within specification
+[ ] Air filtration system status: GREEN
+[ ] Paint supply lines primed and bubble-free
+[ ] Robot teach points verified (daily first-run check)
+[ ] Color match panel approved by paint quality
+[ ] Spray guns clean and atomizer caps replaced
+
+4. BASECOAT APPLICATION SEQUENCE
+
+Pass 1 - Primer Surface Preparation
+- Tack wipe all surfaces with approved solvent cloth
+- Verify no dust, fibers, or contaminants visible under UV light
+- Report any primer defects to paint quality before proceeding
+
+Pass 2 - First Basecoat Layer
+- Film thickness target: 12-15 microns
+- Robot speed: 400 mm/s
+- Spray distance: 200mm from surface
+- Fan width: 300mm
+- Flash time after first coat: 3 minutes minimum
+
+Pass 3 - Second Basecoat Layer
+- Film thickness target: 12-15 microns (cumulative: 24-30 microns)
+- Same parameters as Pass 2
+- Flash time after second coat: 5 minutes minimum
+
+Pass 4 - Optional Third Layer (metallic colors only)
+- Orientation coat at reduced pressure
+- Film thickness: 5-8 microns
+- Purpose: Align metallic flakes for uniform appearance
+
+5. QUALITY CHECKS BETWEEN BOOTHS
+- Film thickness measurement (3 points per panel)
+- Visual inspection under halogen flood lights
+- Color match verification against master panel
+- Orange peel assessment (must be ≤ Grade 3)
+
+APPROVED BY: Paint Operations Manager`;
+
+const MI_TEXT_5 = `MANUFACTURING INSTRUCTIONS - MI-EL-0198
+WIRING HARNESS INSTALLATION: BODY MAIN HARNESS
+
+REVISION: 3.1.0
+EFFECTIVE DATE: February 2024
+WORK STATION: GA-Station 6 and 7
+
+1. PURPOSE
+Instructions for routing and connecting the body main wiring harness in Model 3/Y vehicles.
+
+2. CYCLE TIME: 145 seconds (split across 2 stations)
+
+3. MATERIALS
+- Body main harness assembly (verify P/N matches variant on build sheet)
+- 12x push-pin retainers (Part# PR-3340)
+- 6x adhesive cable clips (Part# AC-1150)
+- Connector grease (apply to all exterior connectors)
+
+4. STATION 6 - ROUTING (75 seconds)
+
+Step 1: Harness Insertion
+- Feed harness through firewall grommet (pre-installed)
+- Ensure grommet fully seated (water seal critical)
+- Route trunk along driver side sill channel
+
+Step 2: Sill Routing
+- Lay harness in channel, press into retainer clips every 150mm
+- Install 6x push-pin retainers through harness loops into body holes
+- Verify no pinch points at door hinge area
+- Route A-pillar branch upward through headliner channel
+
+Step 3: Rear Routing
+- Route rear branch under rear seat mount
+- Feed through C-pillar channel to taillight area
+- Secure with 3x adhesive clips along trunk floor
+
+5. STATION 7 - CONNECTIONS (70 seconds)
+
+Step 1: Forward Connections
+- BCM connector (24-pin, gray) - driver kick panel
+- Fuse box connector (48-pin, black) - under dash
+- Instrument cluster (16-pin, blue) - behind steering column
+- Climate control (8-pin, white) - center stack
+
+Step 2: Rear Connections
+- Left taillight (6-pin)
+- Right taillight (6-pin)
+- Trunk latch (4-pin)
+- Rear camera (4-pin)
+
+6. VERIFICATION
+- Continuity test via diagnostic tool (scan for all modules present)
+- Tug test on every connector (must hold firm)
+- Visual check: no exposed wires, no kinked harness sections
+
+APPROVED BY: Electrical Engineering Supervisor`;
+
+const QI_TEXT_3 = `QUALITY INSTRUCTIONS - QI-PT-0234
+PAINT QUALITY INSPECTION: FINAL APPEARANCE AUDIT
+
+REVISION: 3.0.0
+EFFECTIVE DATE: March 2024
+INSPECTION AREA: Paint Shop Exit
+
+1. PURPOSE
+Define inspection criteria for final paint quality assessment before vehicles proceed to General Assembly.
+
+2. INSPECTION ENVIRONMENT
+- Lighting: 1500 lux minimum, CRI > 90 (halogen flood)
+- Inspector position: 45-degree angle, distance 0.5-1.0 meters
+- Background: Neutral gray walls (18% reflectance)
+- Inspection time: Maximum 90 seconds per vehicle
+
+3. DEFECT CLASSIFICATION
+
+CRITICAL (Grade A - Reject):
+- Paint runs or sags > 2mm in length
+- Color mismatch between panels (ΔE > 1.5)
+- Exposed primer or bare metal
+- Foreign object inclusions > 0.5mm
+- Fish eyes or craters on horizontal surfaces
+
+MAJOR (Grade B - Rework):
+- Dust nibs > 3 per panel on horizontal surfaces
+- Orange peel exceeding Grade 4 standard
+- Sanding marks visible under inspection lighting
+- Overspray on non-painted surfaces
+- Minor color fade at panel edges
+
+MINOR (Grade C - Accept with Note):
+- Dust nibs ≤ 3 per panel
+- Minor texture variation in hidden areas
+- Slight gloss variation between panels (< 5 GU difference)
+
+4. MEASUREMENT TOOLS
+- Glossmeter (60° angle): Target ≥ 85 GU for all colors
+- Film thickness gauge: Total DFT 100-130 microns
+- Color spectrophotometer: ΔE ≤ 1.0 vs master
+- Surface profile comparator for orange peel grading
+
+5. DOCUMENTATION
+- Record all defects on vehicle inspection sheet with location codes
+- Photograph Grade A and B defects
+- Enter data into quality tracking system within 30 minutes
+- Generate shift summary report for paint operations
+
+APPROVED BY: Paint Quality Supervisor`;
+
+const QI_TEXT_4 = `QUALITY INSTRUCTIONS - QI-FA-0089
+FINAL VEHICLE AUDIT: PRE-DELIVERY INSPECTION
+
+REVISION: 6.2.0
+EFFECTIVE DATE: February 2024
+AUDIT FREQUENCY: 100% of vehicles before shipment
+
+1. PURPOSE
+Comprehensive final audit checklist ensuring every vehicle meets Tesla delivery standards before leaving the factory.
+
+2. EXTERIOR AUDIT (3 minutes)
+
+2.1 Panel Gaps and Flush
+- All panel gaps: Within ± 1mm of nominal
+- Flush tolerance: ± 0.5mm
+- Measure at 12 designated points per vehicle side
+- Record measurements in gap audit database
+
+2.2 Paint and Finish
+- No visible defects under daylight simulation lighting
+- All trim pieces properly aligned and secured
+- Glass: No chips, cracks, or distortion
+- Wheels: No curb damage, proper torque verified
+
+2.3 Lighting
+- All exterior lights functional (headlamps, taillights, signals, markers)
+- Headlamp aim verified via alignment screen
+- DRL operation confirmed
+
+3. INTERIOR AUDIT (3 minutes)
+
+3.1 Fit and Finish
+- Dashboard alignment and gap consistency
+- Center screen powers on within 5 seconds
+- All switches and controls functional
+- Seat adjustment: All axes operational
+- Seatbelts: Retract smoothly, latches click
+
+3.2 NVH Quick Check
+- Close each door: Solid sound, no rattles
+- Open/close trunk and frunk: Smooth operation
+- Window operation: All 4 windows cycle smoothly
+
+4. FUNCTIONAL TESTS (4 minutes)
+- Start vehicle, verify no warning lights after 10 seconds
+- HVAC: Heat and cool within 30 seconds of activation
+- Wiper operation: All speeds
+- Horn: Functional
+- Parking brake: Engage and release
+
+5. DISPOSITION
+- PASS: Vehicle cleared for shipment
+- CONDITIONAL: Minor fix needed, rework and re-audit within 24 hours
+- FAIL: Major issue, return to production for correction
+
+APPROVED BY: Quality Assurance Director`;
+
+const QI_TEXT_5 = `QUALITY INSTRUCTIONS - QI-SQ-0156
+SUPPLIER PART VALIDATION: PPAP REQUIREMENTS
+
+REVISION: 2.1.0
+EFFECTIVE DATE: January 2024
+APPLIES TO: All new production parts and engineering changes
+
+1. PURPOSE
+Define the Production Part Approval Process (PPAP) requirements for supplier parts before they can be used in Tesla vehicle production.
+
+2. SUBMISSION LEVELS
+
+Level 1 - Warrant Only
+- Part submission warrant signed by supplier
+- Used for: Low-risk cosmetic parts only
+
+Level 3 - Standard (Most Common)
+- Part submission warrant
+- Dimensional results (full layout, 5 parts minimum)
+- Material test results
+- Performance test results
+- Process flow diagram
+- Control plan
+- FMEA (Process)
+- Capability study (Cpk ≥ 1.67 for critical characteristics)
+
+Level 5 - Full
+- All Level 3 elements PLUS:
+- On-site audit results
+- Checking fixtures and measurement systems
+- Sample parts (25 minimum for production trial)
+- Used for: Safety-critical components
+
+3. DIMENSIONAL VALIDATION
+- Measure all drawing characteristics on 5 production parts
+- Report in standardized format (PPAP template v4.0)
+- GD&T features: Report actual values, not just pass/fail
+- Critical dimensions: Cpk study on 30 consecutive parts
+
+4. MATERIAL CERTIFICATION
+- Mill certificates for all raw materials
+- IMDS (International Material Data System) entry required
+- REACH and RoHS compliance documentation
+- Restricted substance test results per Tesla RSL
+
+5. APPROVAL TIMELINE
+- Initial review: 5 business days from submission
+- Feedback to supplier: Within 3 business days of review
+- Final approval or rejection: Within 15 business days total
+- Interim approval (conditional): 90 days maximum
+
+APPROVED BY: Supplier Quality Engineering Manager`;
+
+const QAN_TEXT_3 = `QUALITY ALERT NOTICE - QAN-2024-0031
+PAINT DEFECT CLUSTER: METALLIC BASECOAT ORANGE PEEL
+
+ALERT LEVEL: YELLOW (Elevated Monitoring)
+ISSUED: March 15, 2024
+VALID UNTIL: Root cause corrected
+
+1. PROBLEM DESCRIPTION
+An increase in orange peel defects has been identified on vehicles painted in Midnight Silver Metallic during the past 48 hours. Defect rate has increased from 2% baseline to 11% on affected color.
+
+2. AFFECTED PRODUCT
+- Color: Midnight Silver Metallic (Color Code: PMNG)
+- Lines affected: Paint Booth 3 and Booth 5
+- Estimated affected vehicles: 85 units (March 13-15)
+- Other colors NOT affected
+
+3. ROOT CAUSE INVESTIGATION (In Progress)
+- Suspected: Humidity control drift in Booth 3 (recorded 72% vs 65% target)
+- Under investigation: New batch of metallic basecoat (Lot# PPG-240312-A)
+- HVAC maintenance records being reviewed
+- Paint viscosity samples sent to lab (results expected March 16)
+
+4. CONTAINMENT ACTIONS
+[ ] Increase paint quality inspection from sampling to 100% for PMNG color
+[ ] Hold all PMNG vehicles from last 48 hours for re-inspection
+[ ] Calibrate humidity sensors in Booth 3 and 5
+[ ] Retain paint samples from current batch for lab analysis
+[ ] Notify paint supplier of potential material issue
+
+5. REWORK DISPOSITION
+Vehicles with orange peel exceeding Grade 3:
+- Wet sand affected panels (2000 grit)
+- Buff and polish to restore finish
+- Re-inspect under standard lighting
+- Maximum 2 rework attempts before respray required
+
+ISSUED BY: Paint Quality Engineering`;
+
+const QAN_TEXT_4 = `QUALITY ALERT NOTICE - QAN-2024-0038
+CRITICAL: FASTENER LOT RECALL - INCORRECT HEAT TREATMENT
+
+ALERT LEVEL: RED (Immediate Action Required)
+ISSUED: March 18, 2024
+VALID UNTIL: All affected inventory dispositioned
+
+1. PROBLEM DESCRIPTION
+Fastener supplier (BoltPro Industries) has issued a voluntary recall notification for M10 structural bolts (Part# BP-M10-FL-10.9) due to incorrect heat treatment. Affected bolts may not meet Grade 10.9 tensile strength requirements.
+
+2. AFFECTED LOT INFORMATION
+- Part: M10x30 Flanged Bolt, Grade 10.9
+- Supplier: BoltPro Industries
+- Affected lots: BP-2024-1102, BP-2024-1103, BP-2024-1104
+- Quantity in recall: 45,000 pieces
+- Date codes: February 15-22, 2024
+- Used at: Suspension mount, subframe attachment points
+
+3. RISK ASSESSMENT
+- Safety risk: HIGH - These are structural fasteners in suspension system
+- Failure mode: Bolt fracture under dynamic loading
+- Potential consequence: Suspension component separation during driving
+
+4. IMMEDIATE ACTIONS
+[ ] STOP all production using affected bolt lots
+[ ] Quarantine all remaining inventory from affected lots
+[ ] Identify all vehicles built with affected lot numbers (via MES traceability)
+[ ] Notify vehicle engineering for risk assessment
+[ ] Replace with verified conforming bolts from alternative lots
+[ ] 100% torque re-verification on affected vehicles if still in plant
+
+5. FIELD ACTION (if vehicles shipped)
+- Engineering to complete risk analysis within 24 hours
+- If field action required, notify regulatory affairs team
+- Prepare dealer notification package
+- Supplier 8D report required within 5 business days
+
+ISSUED BY: Supplier Quality Engineering
+ESCALATION: VP Quality - Immediate notification required`;
+
+const QAN_TEXT_5 = `QUALITY ALERT NOTICE - QAN-2024-0042
+WARNING: SOFTWARE CALIBRATION ERROR - TORQUE CONTROLLERS
+
+ALERT LEVEL: YELLOW (Elevated Monitoring)
+ISSUED: March 20, 2024
+VALID UNTIL: Software patch deployed and verified
+
+1. PROBLEM DESCRIPTION
+A software update deployed to Atlas Copco torque controllers on March 19 introduced a calibration offset. Controllers at 6 stations are reading 3-5% higher than actual applied torque.
+
+2. AFFECTED STATIONS
+- GA Line 1: Stations 22, 31 (dashboard, seat install)
+- GA Line 2: Stations 15, 28 (door hinge, wheel bolts)
+- Battery Line 4: Station 8 (module mounting)
+- Battery Line 6: Station 12 (bus bar connections)
+
+3. IMPACT ANALYSIS
+- Affected window: March 19, 6:00 AM to March 20, 10:00 AM (28 hours)
+- Estimated affected vehicles/modules: 320 vehicles, 180 battery modules
+- Actual torque is LOWER than displayed (controllers read high)
+- Maximum under-torque: 5% of nominal specification
+
+4. CONTAINMENT
+[ ] Roll back software to previous version (v8.2.1) - COMPLETED 10:15 AM
+[ ] Verify all 6 stations reading correctly against master standard
+[ ] Identify all units produced during affected window via MES timestamps
+[ ] Spot-check torque on 50 random units from affected period
+[ ] If spot-check shows values below minimum, expand to 100% verification
+
+5. CORRECTIVE ACTION
+- Software vendor to provide root cause analysis within 48 hours
+- All future software updates require validation on test bench before deployment
+- Add torque verification step using independent measurement after any software change
+
+ISSUED BY: Process Engineering
+REVIEWED BY: Quality Director`;
+
+const VA_TEXT_3 = `VISUAL AIDE - VA-TQ-0045
+CRITICAL TORQUE SEQUENCE DIAGRAM: BATTERY PACK CLOSURE
+
+REVISION: 2.0.0
+EFFECTIVE DATE: March 2024
+
+1. PURPOSE
+Reference diagram for the correct bolt torquing sequence when closing battery pack housings. Following the correct star pattern is critical to ensure uniform seal compression.
+
+2. BOLT LAYOUT (42 perimeter bolts - M6)
+
+Bolt numbering starts at front-left corner, proceeds clockwise:
+Position 1-11: Front edge (left to right)
+Position 12-22: Right edge (front to rear)
+Position 23-32: Rear edge (right to left)
+Position 33-42: Left edge (rear to front)
+
+3. TORQUE SEQUENCE - STAR PATTERN
+
+PASS 1 (Snug - 5 Nm):
+Order: 1 → 22 → 11 → 32 → 6 → 27 → 17 → 37 → 3 → 24 → 14 → 35 → 8 → 29 → 19 → 39 → 5 → 26 → 9 → 30 → 15 → 36 → 20 → 40 → 2 → 23 → 12 → 33 → 7 → 28 → 16 → 38 → 4 → 25 → 10 → 31 → 13 → 34 → 18 → 42 → 21 → 41
+
+PASS 2 (Final - 10 Nm ± 0.5 Nm):
+Same sequence as Pass 1
+Mark each bolt with paint pen after final torque
+
+4. CRITICAL RULES
+- NEVER torque bolts in sequential order (1, 2, 3, 4...)
+- NEVER skip Pass 1 and go directly to final torque
+- If any bolt is found loose during Pass 2, restart BOTH passes
+- Maximum time between Pass 1 and Pass 2: 10 minutes
+- Sealant working time: 30 minutes from application
+
+5. VERIFICATION
+After completing both passes:
+[ ] All 42 bolts marked with yellow paint pen
+[ ] No gaps visible between housing and lid
+[ ] Sealant squeeze-out visible around entire perimeter
+[ ] Torque audit: Verify 5 random bolts with checking tool
+
+POSTED AT: Battery Pack Closure Stations - Lines 2, 4, 6`;
+
+const VA_TEXT_4 = `VISUAL AIDE - VA-FL-0023
+FLUID FILL POINT IDENTIFICATION GUIDE
+
+REVISION: 3.0.0
+EFFECTIVE DATE: February 2024
+
+1. PURPOSE
+Quick reference for identifying all vehicle fluid fill points, correct fluid types, and fill quantities. Post at all fluid fill stations.
+
+2. FLUID FILL POINTS
+
+COOLANT SYSTEM (ORANGE CAP)
+- Location: Front trunk, passenger side
+- Fluid: G-48 ethylene glycol coolant (50/50 pre-mix)
+- Quantity: 8.5 liters (Model 3), 9.2 liters (Model Y)
+- Fill method: Vacuum fill system
+- Verification: Level between MIN and MAX marks after 5-min circulation
+
+BRAKE FLUID (YELLOW CAP)
+- Location: Front trunk, driver side
+- Fluid: DOT 4 brake fluid (Tesla-approved brands only)
+- Quantity: 0.6 liters
+- Fill method: Gravity fill with reservoir adapter
+- Verification: Level at MAX mark, ABS bleed cycle completed
+
+WINDSHIELD WASHER (BLUE CAP)
+- Location: Front trunk, center
+- Fluid: Tesla-approved washer concentrate (diluted per label)
+- Quantity: 3.8 liters
+- Fill method: Manual pour
+- Verification: Fill to neck, test spray operation
+
+DRIVE UNIT GEAR OIL (NO EXTERNAL FILL - FACTORY SEALED)
+- Front unit: 0.8L Dexron VI ATF (pre-filled at drive unit assembly)
+- Rear unit: 0.9L Dexron VI ATF (pre-filled at drive unit assembly)
+- Service interval: Lifetime fill, no maintenance required
+
+A/C REFRIGERANT (GREEN SERVICE PORT)
+- Refrigerant: R-1234yf
+- Charge: 650g (Model 3), 720g (Model Y)
+- Fill method: Certified A/C charging station only
+- Heat pump vehicles: Additional 50g for heat pump circuit
+
+3. CRITICAL WARNINGS
+- NEVER mix coolant types (G-48 only, no G-05 or universal)
+- NEVER use DOT 3 brake fluid (DOT 4 minimum)
+- Verify correct fluid BEFORE filling - cross-contamination requires full system flush
+
+POSTED AT: All fluid fill stations in General Assembly`;
+
+const VA_TEXT_5 = `VISUAL AIDE - VA-DG-0056
+DIAGNOSTIC ERROR CODE QUICK REFERENCE
+
+REVISION: 4.1.0
+EFFECTIVE DATE: March 2024
+
+1. PURPOSE
+Quick reference for common diagnostic error codes encountered during end-of-line testing. For full diagnostic procedures, refer to the service manual.
+
+2. BATTERY SYSTEM CODES
+
+BMS_001: Cell voltage imbalance > 100mV
+- Action: Re-run cell balancing. If persists after 30 min, flag for engineering
+- Priority: HIGH - Do not ship
+
+BMS_002: Temperature sensor out of range
+- Action: Check connector at affected sensor position. Re-seat and re-test
+- Priority: MEDIUM - Rework and re-test
+
+BMS_003: Isolation fault detected
+- Action: STOP. Measure pack isolation resistance. Must be > 500kΩ
+- Priority: CRITICAL - HV safety issue, quarantine immediately
+
+BMS_004: Communication timeout with module
+- Action: Check CAN bus harness connector at module. Re-seat connector
+- Priority: MEDIUM - Usually connector seating issue
+
+3. DRIVE UNIT CODES
+
+DU_010: Motor phase resistance out of range
+- Action: Check HV connector torque. Re-run resistance test
+- Priority: HIGH - Do not ship if persists
+
+DU_015: Resolver signal fault
+- Action: Check resolver connector. If persists, replace drive unit
+- Priority: HIGH - Vehicle undriveable
+
+DU_020: Inverter over-temperature during test
+- Action: Verify coolant flow to inverter. Check for air in cooling circuit
+- Priority: MEDIUM - Purge cooling system and re-test
+
+4. BODY ELECTRONICS CODES
+
+BCM_101: Door ajar sensor fault
+- Action: Check door latch connector and harness routing
+- Priority: LOW - Adjust and re-test
+
+BCM_105: Window anti-pinch calibration needed
+- Action: Run window initialization procedure (close-open-close)
+- Priority: LOW - Standard post-assembly calibration
+
+BCM_110: Seat memory module not responding
+- Action: Check seat wiring harness under seat rail
+- Priority: LOW - Re-seat connector and re-test
+
+5. ESCALATION
+If error code persists after standard corrective action:
+1. Document code, station, VIN, and actions taken
+2. Escalate to zone engineer within 15 minutes
+3. Do NOT repeat corrective action more than 2 times
+
+POSTED AT: All End-of-Line Test Stations`;
+
+const PCA_TEXT_3 = `PROCESS CHANGE APPROVAL - PCA-2024-0022
+NEW STRUCTURAL ADHESIVE: BODY PANEL BONDING
+
+STATUS: APPROVED
+CHANGE TYPE: Material and Process
+RISK LEVEL: Medium
+EFFECTIVE DATE: May 15, 2024
+
+1. CHANGE DESCRIPTION
+Replace current epoxy structural adhesive (Henkel Teroson EP5065) with new crash-optimized adhesive (Dow BETAFORCE 2850) for body panel bonding at Stations B12-B16 in Body Shop.
+
+2. CURRENT STATE
+- Adhesive: Henkel Teroson EP5065
+- Bead width: 8mm
+- Cure temperature: 180°C for 25 minutes
+- Lap shear strength: 25 MPa
+- Impact peel strength: 20 N/mm
+
+3. PROPOSED STATE
+- Adhesive: Dow BETAFORCE 2850
+- Bead width: 6mm (25% material reduction)
+- Cure temperature: 170°C for 20 minutes (energy savings)
+- Lap shear strength: 32 MPa (28% improvement)
+- Impact peel strength: 35 N/mm (75% improvement)
+
+4. JUSTIFICATION
+- Superior crash energy absorption (validated in 15 crash tests)
+- Lower application temperature reduces energy costs by $120K/year
+- Narrower bead reduces material cost by 25%
+- Faster cure time increases throughput by 2 JPH at body shop bottleneck
+
+5. VALIDATION RESULTS
+- Full vehicle crash test: PASS (NHTSA 5-star equivalent)
+- 1000-hour salt spray corrosion test: PASS
+- Thermal cycling (-40°C to +80°C, 500 cycles): PASS
+- Production trial (500 vehicles): Zero adhesive-related defects
+
+6. IMPLEMENTATION
+- Week 1: Install new dispensing equipment and purge lines
+- Week 2: Operator training (4 hours per operator)
+- Week 3: Pilot run on Station B12 only (100 vehicles)
+- Week 4: Roll out to B13-B16 after pilot validation
+
+APPROVED BY: Body Engineering, Quality, Manufacturing`;
+
+const PCA_TEXT_4 = `PROCESS CHANGE APPROVAL - PCA-2024-0029
+AUTOMATED VISION INSPECTION: WIRE HARNESS ROUTING
+
+STATUS: APPROVED
+CHANGE TYPE: Inspection Method
+RISK LEVEL: Low
+EFFECTIVE DATE: April 1, 2024
+
+1. CHANGE DESCRIPTION
+Replace manual visual inspection of wire harness routing at GA Stations 6-7 with automated camera-based inspection system. The system uses AI-powered image recognition to verify harness routing, connector seating, and clip installation.
+
+2. CURRENT STATE
+- Inspection method: Manual visual by operator (self-inspect)
+- Inspection time: 15 seconds per vehicle
+- Detection rate: ~88% (based on downstream escape data)
+- Common escapes: Missing clips, loose connectors, incorrect routing
+
+3. PROPOSED STATE
+- Inspection method: 8-camera vision system with AI analysis
+- Inspection time: 3 seconds per vehicle (automated)
+- Expected detection rate: >99%
+- System: Cognex ViDi Deep Learning platform
+- Training dataset: 10,000 labeled images (correct and defective)
+
+4. JUSTIFICATION
+- 12% of warranty claims in harness category traced to routing defects
+- Manual inspection inconsistent across operators and shifts
+- Camera system provides 100% documented evidence per vehicle
+- Expected warranty cost reduction: $280K/year
+- ROI payback period: 8 months
+
+5. SYSTEM SPECIFICATIONS
+- 8x Cognex IS7800 cameras (5MP resolution)
+- LED ring lighting with polarization filters
+- Processing time: < 2 seconds for full analysis
+- Pass/fail decision with defect location overlay
+- Image archive: 90 days rolling storage
+
+6. FAILURE MODE HANDLING
+- If vision system detects defect: Yellow light, operator corrects and re-scans
+- If vision system is offline: Revert to manual inspection protocol
+- If uncertain result (confidence < 95%): Flag for manual verification
+- Daily system calibration check using reference panel
+
+APPROVED BY: Quality Engineering, Manufacturing Engineering`;
+
+const PCA_TEXT_5 = `PROCESS CHANGE APPROVAL - PCA-2024-0035
+PACKAGING METHOD CHANGE: BATTERY MODULE SHIPPING
+
+STATUS: PENDING VALIDATION
+CHANGE TYPE: Packaging and Logistics
+RISK LEVEL: Medium
+TARGET EFFECTIVE DATE: June 1, 2024
+
+1. CHANGE DESCRIPTION
+Transition battery module shipping packaging from single-use cardboard/foam to reusable plastic totes with custom foam inserts. This change applies to all battery modules shipped between Cell Manufacturing and Pack Assembly buildings.
+
+2. CURRENT STATE
+- Packaging: Corrugated cardboard box with EPS foam inserts
+- Modules per container: 2
+- Container lifecycle: Single use (recycled after unpacking)
+- Damage rate during transport: 0.8%
+- Annual packaging cost: $1.2M
+- Annual packaging waste: 45 tons
+
+3. PROPOSED STATE
+- Packaging: HDPE returnable tote (Part# RT-BM-400)
+- Modules per container: 4 (double current capacity)
+- Container lifecycle: 250+ cycles (5-year estimated life)
+- Expected damage rate: < 0.1%
+- Annual packaging cost: $180K (after Year 1 investment)
+- Annual packaging waste: < 2 tons (end-of-life recycling only)
+
+4. JUSTIFICATION
+- 85% reduction in packaging cost after Year 1
+- 96% reduction in packaging waste
+- Better protection reduces module damage during transport
+- Doubles shipping density (fewer forklift trips required)
+- Aligns with Tesla sustainability commitments
+
+5. RISK ASSESSMENT
+Risk: Tote damage or contamination affecting module quality
+Mitigation: Automated tote wash and inspection station at return point
+
+Risk: Insufficient tote inventory during ramp-up
+Mitigation: Order 120% of calculated requirement, phase out cardboard gradually
+
+Risk: Foam insert degradation over time
+Mitigation: Replace inserts every 50 cycles, visual inspection at wash station
+
+6. VALIDATION PLAN
+- Ship vibration test: ISTA 3A protocol with loaded totes
+- Drop test: Corner and edge drops from 0.5m height
+- 30-day pilot: Track damage rate on 500 module shipments
+- Cost tracking: Compare actual vs projected savings for 90 days
+
+APPROVAL STATUS
+Manufacturing Engineering: APPROVED
+Quality Engineering: APPROVED
+Logistics: APPROVED
+Finance: PENDING (reviewing Year 1 investment)
+Sustainability: APPROVED
+
+CHANGE OWNER: Logistics and Packaging Engineering`;
+
 // ── Reusable Cloudinary URLs for downloadable files ──────────────────
 
 const CLOUDINARY_DOCX_1 = 'https://res.cloudinary.com/dtr1tnutd/raw/upload/v1763998236/cwmeq1s3yjy2cg4c7csr.docx';
@@ -871,6 +1726,39 @@ const SAMPLES = [
     filePublicId: 'mn_material_change_002',
     textContent: MN_TEXT_2
   },
+  {
+    title: 'Shift Schedule Change - Stamping Plant',
+    description: 'Updated shift rotation schedule for stamping plant effective April 2024.',
+    documentType: 'MN',
+    category: 'Operations',
+    tags: ['shift-change', 'stamping', 'schedule'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'mn_shift_schedule_003',
+    textContent: MN_TEXT_3
+  },
+  {
+    title: 'New Equipment Installation - CNC Mill Bay 7',
+    description: 'Notice for new 5-axis CNC milling center installation in Bay 7.',
+    documentType: 'MN',
+    category: 'Equipment',
+    tags: ['equipment', 'cnc', 'installation', 'bay-7'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'mn_cnc_install_004',
+    textContent: MN_TEXT_4
+  },
+  {
+    title: 'Production Ramp-Up Plan - Cybertruck Line',
+    description: 'Phase 2 ramp-up timeline and milestones for Cybertruck production.',
+    documentType: 'MN',
+    category: 'Production Planning',
+    tags: ['ramp-up', 'cybertruck', 'capacity', 'milestones'],
+    version: '2.0.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'mn_ramp_up_005',
+    textContent: MN_TEXT_5
+  },
 
   // ── MI: Manufacturing Instructions ──
   {
@@ -894,6 +1782,39 @@ const SAMPLES = [
     fileUrl: CLOUDINARY_PDF_1,
     filePublicId: 'mi_fascia_install_002',
     textContent: MI_TEXT_2
+  },
+  {
+    title: 'Drive Unit Assembly Procedure',
+    description: 'Complete assembly procedure for front and rear drive unit installation.',
+    documentType: 'MI',
+    category: 'Powertrain',
+    tags: ['drive-unit', 'assembly', 'motor', 'procedure'],
+    version: '1.4.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'mi_drive_unit_003',
+    textContent: MI_TEXT_3
+  },
+  {
+    title: 'Paint Booth Operation Manual',
+    description: 'Standard operating procedure for automated paint booth Lines 1-3.',
+    documentType: 'MI',
+    category: 'Paint',
+    tags: ['paint', 'booth', 'operation', 'automation'],
+    version: '3.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'mi_paint_booth_004',
+    textContent: MI_TEXT_4
+  },
+  {
+    title: 'Wiring Harness Installation Guide',
+    description: 'Step-by-step instructions for main body wiring harness routing and connection.',
+    documentType: 'MI',
+    category: 'Electrical',
+    tags: ['wiring', 'harness', 'installation', 'routing'],
+    version: '2.1.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'mi_wiring_harness_005',
+    textContent: MI_TEXT_5
   },
 
   // ── QI: Quality Instructions ──
@@ -919,6 +1840,39 @@ const SAMPLES = [
     filePublicId: 'qi_weld_quality_002',
     textContent: QI_TEXT_2
   },
+  {
+    title: 'Paint Quality Inspection Standards',
+    description: 'Color match, orange peel, and defect classification for all paint operations.',
+    documentType: 'QI',
+    category: 'Paint',
+    tags: ['paint', 'inspection', 'color-match', 'defect'],
+    version: '5.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'qi_paint_quality_003',
+    textContent: QI_TEXT_3
+  },
+  {
+    title: 'Final Vehicle Audit Checklist',
+    description: 'Comprehensive end-of-line audit checklist for all vehicle programs.',
+    documentType: 'QI',
+    category: 'Final Quality',
+    tags: ['audit', 'final-inspection', 'checklist', 'vehicle'],
+    version: '3.1.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'qi_final_audit_004',
+    textContent: QI_TEXT_4
+  },
+  {
+    title: 'Supplier Part Validation (PPAP) Procedure',
+    description: 'PPAP submission requirements and validation criteria for new supplier parts.',
+    documentType: 'QI',
+    category: 'Supplier Quality',
+    tags: ['ppap', 'supplier', 'validation', 'incoming'],
+    version: '2.0.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'qi_ppap_validation_005',
+    textContent: QI_TEXT_5
+  },
 
   // ── QAN: Quality Alert Notices ──
   {
@@ -942,6 +1896,39 @@ const SAMPLES = [
     fileUrl: CLOUDINARY_DOCX_2,
     filePublicId: 'qan_coolant_hose_002',
     textContent: QAN_TEXT_2
+  },
+  {
+    title: 'ALERT: Paint Defect Cluster - Line 2 Booth',
+    description: 'Orange alert for elevated paint defect rate in Line 2 spray booth.',
+    documentType: 'QAN',
+    category: 'Paint',
+    tags: ['alert', 'paint', 'defect', 'cluster'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'qan_paint_defect_003',
+    textContent: QAN_TEXT_3
+  },
+  {
+    title: 'CRITICAL: Fastener Lot Recall - Supplier XM',
+    description: 'Red alert for non-conforming fastener lot requiring immediate containment.',
+    documentType: 'QAN',
+    category: 'Supplier Quality',
+    tags: ['alert', 'fastener', 'recall', 'critical', 'containment'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'qan_fastener_recall_004',
+    textContent: QAN_TEXT_4
+  },
+  {
+    title: 'WARNING: Software Calibration Error - ABS Module',
+    description: 'Yellow alert for incorrect calibration data in ABS control module batch.',
+    documentType: 'QAN',
+    category: 'Electronics',
+    tags: ['alert', 'software', 'calibration', 'abs', 'module'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'qan_software_cal_005',
+    textContent: QAN_TEXT_5
   },
 
   // ── VA: Visual Aides ──
@@ -967,6 +1954,39 @@ const SAMPLES = [
     filePublicId: 'va_ppe_guide_002',
     textContent: VA_TEXT_2
   },
+  {
+    title: 'Torque Sequence Diagram - Subframe Assembly',
+    description: 'Visual guide for correct bolt torque sequence on front subframe.',
+    documentType: 'VA',
+    category: 'Body',
+    tags: ['visual-aide', 'torque', 'sequence', 'subframe'],
+    version: '1.2.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'va_torque_sequence_003',
+    textContent: VA_TEXT_3
+  },
+  {
+    title: 'Fluid Fill Point Identification Chart',
+    description: 'Location and color-coded identification of all fluid fill points on vehicle.',
+    documentType: 'VA',
+    category: 'General Assembly',
+    tags: ['visual-aide', 'fluid-fill', 'identification', 'chart'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'va_fluid_fill_004',
+    textContent: VA_TEXT_4
+  },
+  {
+    title: 'Diagnostic Error Code Quick Reference',
+    description: 'Visual quick-reference card for common DTC codes and resolution steps.',
+    documentType: 'VA',
+    category: 'Electronics',
+    tags: ['visual-aide', 'diagnostic', 'dtc', 'error-codes'],
+    version: '3.0.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'va_dtc_reference_005',
+    textContent: VA_TEXT_5
+  },
 
   // ── PCA: Process Change Approvals ──
   {
@@ -990,6 +2010,39 @@ const SAMPLES = [
     fileUrl: CLOUDINARY_PDF_1,
     filePublicId: 'pca_line_speed_002',
     textContent: PCA_TEXT_2
+  },
+  {
+    title: 'New Structural Adhesive Introduction',
+    description: 'Approval for new structural adhesive replacing spot welds on rear quarter panel.',
+    documentType: 'PCA',
+    category: 'Body',
+    tags: ['process-change', 'adhesive', 'structural', 'approved'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_DOCX_1,
+    filePublicId: 'pca_adhesive_003',
+    textContent: PCA_TEXT_3
+  },
+  {
+    title: 'Automated Vision Inspection Deployment',
+    description: 'Process change to add AI-powered vision inspection at end-of-line station.',
+    documentType: 'PCA',
+    category: 'Quality',
+    tags: ['process-change', 'vision', 'inspection', 'automation'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_PDF_1,
+    filePublicId: 'pca_vision_inspect_004',
+    textContent: PCA_TEXT_4
+  },
+  {
+    title: 'Packaging Method Change - Battery Modules',
+    description: 'Updated packaging and shipping method for battery modules to reduce damage.',
+    documentType: 'PCA',
+    category: 'Logistics',
+    tags: ['process-change', 'packaging', 'battery', 'shipping'],
+    version: '1.0.0',
+    fileUrl: CLOUDINARY_DOCX_2,
+    filePublicId: 'pca_packaging_005',
+    textContent: PCA_TEXT_5
   }
 ];
 
