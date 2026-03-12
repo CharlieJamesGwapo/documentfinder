@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { Op } from 'sequelize';
 
 import cloudinary from '../config/cloudinary.js';
-import { Document, sequelize } from '../models/index.js';
+import { Document, AuditLog, User, sequelize } from '../models/index.js';
 import { authorize } from '../middleware/auth.js';
 import { logAudit } from '../utils/audit.js';
 
@@ -567,6 +567,25 @@ router.get('/tags', async (req, res) => {
   } catch (error) {
     console.error('Tags error:', error);
     res.status(500).json({ message: 'Unable to fetch tags' });
+  }
+});
+
+router.get('/activity', async (req, res) => {
+  try {
+    const entries = await AuditLog.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: 20,
+      include: [{
+        model: User,
+        as: 'actor',
+        attributes: ['id', 'name', 'photoUrl']
+      }]
+    });
+
+    res.json(entries);
+  } catch (error) {
+    console.error('Activity feed error:', error);
+    res.status(500).json({ message: 'Unable to fetch activity feed' });
   }
 });
 

@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { Download, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Download, Eye, Pencil, Trash2, Star } from 'lucide-react';
 import { formatFileSize, getFormatLabel } from '../../utils/documents.js';
 import { getDocumentTypeConfig } from '../../constants/documentTypes.js';
 
-const DocumentCard = ({ document, onPreview, onDownload, onEdit, onDelete }) => {
+const DocumentCard = ({ document, onPreview, onDownload, onEdit, onDelete, onToggleFavorite, isFavorite }) => {
   const tags = Array.isArray(document.tags) ? document.tags : [];
   const formatLabel = getFormatLabel(document.fileType);
   const fileSize = formatFileSize(document.fileSize);
@@ -17,6 +17,21 @@ const DocumentCard = ({ document, onPreview, onDownload, onEdit, onDelete }) => 
             <span className="truncate">{document.category}</span>
             <span className="whitespace-nowrap">{dayjs(document.createdAt).format('DD MMM YY')}</span>
           </div>
+          <div className="flex items-center gap-1">
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(document.id)}
+                className={`rounded-lg p-1.5 transition active:scale-90 touch-manipulation ${
+                  isFavorite
+                    ? 'text-amber-400'
+                    : 'text-slate-500 hover:text-amber-400'
+                }`}
+                title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                <Star className="h-3.5 w-3.5" fill={isFavorite ? 'currentColor' : 'none'} />
+              </button>
+            )}
           {/* Edit/Delete actions - Admin Only */}
           {(onEdit || onDelete) && (
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -42,6 +57,7 @@ const DocumentCard = ({ document, onPreview, onDownload, onEdit, onDelete }) => 
               )}
             </div>
           )}
+          </div>
         </div>
 
         <div>

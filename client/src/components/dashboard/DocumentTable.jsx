@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
-import { Download, Eye, FileDown, FileUp, ChevronDown, Pencil, Trash2 } from 'lucide-react';
+import { Download, Eye, FileDown, FileUp, ChevronDown, Pencil, Trash2, Star } from 'lucide-react';
 import DocumentCard from './DocumentCard.jsx';
 import { formatFileSize, getFormatLabel } from '../../utils/documents.js';
 import { getDocumentTypeConfig } from '../../constants/documentTypes.js';
@@ -9,7 +9,7 @@ import { SkeletonCard, SkeletonTable } from '../common/Skeleton.jsx';
 import { fetchAllAndExport, downloadImportTemplate } from '../../utils/exportDocuments.js';
 import api from '../../lib/api.js';
 
-const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview, onDownload, onEdit, onDelete, filters, onImported, isAdmin }) => {
+const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview, onDownload, onEdit, onDelete, filters, onImported, isAdmin, onToggleFavorite, isFavorite }) => {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showImportMenu, setShowImportMenu] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -278,6 +278,20 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
                           <Download className="h-3.5 w-3.5" />
                           <span className="hidden lg:inline">Download</span>
                         </button>
+                        {onToggleFavorite && (
+                          <button
+                            type="button"
+                            onClick={() => onToggleFavorite(doc.id)}
+                            className={`inline-flex items-center justify-center rounded-full border p-1.5 transition active:scale-95 ${
+                              isFavorite?.(doc.id)
+                                ? 'border-amber-400/30 bg-amber-500/10 text-amber-400'
+                                : 'border-white/10 text-slate-400 hover:border-amber-400/30 hover:bg-amber-500/10 hover:text-amber-400'
+                            }`}
+                            title={isFavorite?.(doc.id) ? 'Remove from favorites' : 'Add to favorites'}
+                          >
+                            <Star className="h-3.5 w-3.5" fill={isFavorite?.(doc.id) ? 'currentColor' : 'none'} />
+                          </button>
+                        )}
                         {onEdit && (
                           <button
                             type="button"
@@ -331,6 +345,8 @@ const DocumentTable = ({ documents, loading, pagination, onPageChange, onPreview
                 onDownload={onDownload}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                onToggleFavorite={onToggleFavorite}
+                isFavorite={isFavorite?.(doc.id)}
               />
             ))}
           </div>

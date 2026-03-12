@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { Download, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Download, Eye, Pencil, Trash2, Star } from 'lucide-react';
 import { getDocumentTypeConfig } from '../../constants/documentTypes.js';
 
-const RecentDocuments = ({ documents = [], onPreview, onDownload, onEdit, onDelete }) => (
+const RecentDocuments = ({ documents = [], onPreview, onDownload, onEdit, onDelete, onToggleFavorite, isFavorite }) => (
   <section className="rounded-lg border border-white/5 bg-[#15161b] p-3 shadow-lg shadow-black/40 sm:rounded-2xl sm:p-6">
     <div className="mb-3 flex items-center justify-between sm:mb-4">
       <div>
@@ -63,6 +63,20 @@ const RecentDocuments = ({ documents = [], onPreview, onDownload, onEdit, onDele
                     <Download className="h-3.5 w-3.5" />
                     <span>Download</span>
                   </button>
+                  {onToggleFavorite && (
+                    <button
+                      type="button"
+                      onClick={() => onToggleFavorite(doc.id)}
+                      className={`flex items-center justify-center rounded-lg border p-2 min-h-[40px] transition active:scale-95 sm:rounded-full sm:p-1.5 sm:min-h-0 touch-manipulation ${
+                        isFavorite?.(doc.id)
+                          ? 'border-amber-400/30 bg-amber-500/10 text-amber-400'
+                          : 'border-white/10 text-slate-400 hover:border-amber-400/30 hover:bg-amber-500/10 hover:text-amber-400'
+                      }`}
+                      title={isFavorite?.(doc.id) ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                      <Star className="h-3.5 w-3.5" fill={isFavorite?.(doc.id) ? 'currentColor' : 'none'} />
+                    </button>
+                  )}
                   {onEdit && (
                     <button
                       type="button"

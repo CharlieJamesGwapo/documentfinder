@@ -11,9 +11,15 @@ import RecentDocuments from '../../components/dashboard/RecentDocuments.jsx';
 import PreviewModal from '../../components/dashboard/PreviewModal.jsx';
 import EditDocumentModal from '../../components/dashboard/EditDocumentModal.jsx';
 import AnalyticsDashboard from '../../components/dashboard/AnalyticsDashboard.jsx';
+import WelcomeBanner from '../../components/dashboard/WelcomeBanner.jsx';
+import FavoritesBar from '../../components/dashboard/FavoritesBar.jsx';
+import ActivityFeed from '../../components/dashboard/ActivityFeed.jsx';
+import CommandPalette from '../../components/dashboard/CommandPalette.jsx';
 import { downloadDocumentFile } from '../../utils/documents.js';
 import usePullToRefresh from '../../hooks/usePullToRefresh.js';
 import useSwipeGesture from '../../hooks/useSwipeGesture.js';
+import useFavorites from '../../hooks/useFavorites.js';
+import useKeyboardSearch from '../../hooks/useKeyboardSearch.js';
 
 const initialFilters = {
   search: '',
@@ -25,6 +31,8 @@ const initialFilters = {
 
 const Dashboard = () => {
   const { isAdmin } = useAuth();
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { isOpen: searchOpen, open: openSearch, close: closeSearch } = useKeyboardSearch();
   const [filters, setFilters] = useState(initialFilters);
   const [documents, setDocuments] = useState([]);
   const [overview, setOverview] = useState(null);
@@ -274,10 +282,25 @@ const Dashboard = () => {
         </button>
       </div>
 
+      {/* Welcome Banner */}
+      <WelcomeBanner overview={overview} onOpenSearch={openSearch} />
+
       {/* Stats Grid */}
       <div className="animate-fadeIn">
         <StatsGrid overview={overview} loading={loadingOverview} />
       </div>
+
+      {/* Favorites Bar */}
+      {favorites.length > 0 && (
+        <div className="animate-fadeIn">
+          <FavoritesBar
+            favorites={favorites}
+            onPreview={handlePreviewDocument}
+            onDownload={handleDownloadDocument}
+            onToggleFavorite={toggleFavorite}
+          />
+        </div>
+      )}
 
       {/* Empty State - Seed Documents Banner */}
       {!loadingOverview && isAdmin && (overview?.totals?.totalDocuments ?? 0) < 1 && (
@@ -337,6 +360,7 @@ const Dashboard = () => {
               categorySuggestions={categories}
             />
           )}
+          <ActivityFeed />
         </div>
 
         {/* Main Content - Documents */}
@@ -347,6 +371,8 @@ const Dashboard = () => {
             onDownload={handleDownloadDocument}
             onEdit={isAdmin ? handleEditDocument : undefined}
             onDelete={isAdmin ? handleDeleteDocument : undefined}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
           />
           <DocumentTable
             documents={documents}
@@ -360,6 +386,8 @@ const Dashboard = () => {
             filters={filters}
             onImported={refreshAll}
             isAdmin={isAdmin}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
           />
         </div>
       </div>
@@ -380,6 +408,12 @@ const Dashboard = () => {
           categories={categories}
         />
       )}
+
+      <CommandPalette
+        open={searchOpen}
+        onClose={closeSearch}
+        onSelect={handlePreviewDocument}
+      />
     </div>
   );
 };
