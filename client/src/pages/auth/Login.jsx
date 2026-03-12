@@ -263,43 +263,101 @@ const Login = () => {
           </div>
 
           {/* Document Types Showcase */}
-          <div className="mt-3 rounded-lg border border-white/10 bg-[#0e0f13]/80 p-3 backdrop-blur-xl sm:mt-6 sm:rounded-xl sm:p-5 animate-slide-up">
-            <p className="mb-3 text-center text-[0.6rem] font-semibold uppercase tracking-[0.35em] text-primary/70 sm:text-xs">
-              Document Types Managed
-            </p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
-              <div className="group flex items-center gap-2 rounded-lg border border-blue-400/10 bg-blue-500/5 px-2.5 py-2 transition-all duration-200 hover:border-blue-400/30 hover:bg-blue-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-blue-500/15 text-[0.6rem] font-bold text-blue-400 sm:text-xs">MN</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Manufacturing Notice</span>
+          <div className="mt-3 rounded-2xl border border-white/10 bg-gradient-to-b from-[#0e0f13]/95 to-[#12131a]/95 p-4 backdrop-blur-xl sm:mt-6 sm:rounded-3xl sm:p-6 animate-slide-up">
+            <div className="mb-4 text-center sm:mb-5">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-primary/80 sm:text-xs">
+                Supported Document Types
+              </p>
+              <p className="mt-1 text-[0.6rem] text-slate-500 sm:text-xs">
+                6 standardized categories for manufacturing & quality ops
+              </p>
+            </div>
+            <div className="space-y-2 sm:space-y-2.5">
+              {/* MN */}
+              <div className="group flex items-center gap-3 rounded-xl border border-blue-400/10 bg-blue-500/5 px-3 py-2.5 transition-all duration-300 hover:border-blue-400/30 hover:bg-blue-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-500/15 text-base sm:h-9 sm:w-9">
+                  🏭
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-blue-400">MN</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Manufacturing Notice
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Critical alerts & notifications for production lines</p>
+                </div>
               </div>
-              <div className="group flex items-center gap-2 rounded-lg border border-indigo-400/10 bg-indigo-500/5 px-2.5 py-2 transition-all duration-200 hover:border-indigo-400/30 hover:bg-indigo-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-indigo-500/15 text-[0.6rem] font-bold text-indigo-400 sm:text-xs">MI</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Manufacturing Instructions</span>
+              {/* MI */}
+              <div className="group flex items-center gap-3 rounded-xl border border-indigo-400/10 bg-indigo-500/5 px-3 py-2.5 transition-all duration-300 hover:border-indigo-400/30 hover:bg-indigo-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 text-base sm:h-9 sm:w-9">
+                  📋
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-indigo-400">MI</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Manufacturing Instructions
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Step-by-step assembly & operation procedures</p>
+                </div>
               </div>
-              <div className="group flex items-center gap-2 rounded-lg border border-emerald-400/10 bg-emerald-500/5 px-2.5 py-2 transition-all duration-200 hover:border-emerald-400/30 hover:bg-emerald-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-emerald-500/15 text-[0.6rem] font-bold text-emerald-400 sm:text-xs">QI</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Quality Instructions</span>
+              {/* QI */}
+              <div className="group flex items-center gap-3 rounded-xl border border-emerald-400/10 bg-emerald-500/5 px-3 py-2.5 transition-all duration-300 hover:border-emerald-400/30 hover:bg-emerald-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-base sm:h-9 sm:w-9">
+                  ✅
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-emerald-400">QI</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Quality Instructions
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Inspection standards & quality control procedures</p>
+                </div>
               </div>
-              <div className="group flex items-center gap-2 rounded-lg border border-amber-400/10 bg-amber-500/5 px-2.5 py-2 transition-all duration-200 hover:border-amber-400/30 hover:bg-amber-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-amber-500/15 text-[0.6rem] font-bold text-amber-400 sm:text-xs">QAN</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Quality Alert Notice</span>
+              {/* QAN */}
+              <div className="group flex items-center gap-3 rounded-xl border border-amber-400/10 bg-amber-500/5 px-3 py-2.5 transition-all duration-300 hover:border-amber-400/30 hover:bg-amber-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-base sm:h-9 sm:w-9">
+                  ⚠️
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-amber-400">QAN</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Quality Alert Notice
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Non-conformance alerts & containment actions</p>
+                </div>
               </div>
-              <div className="group flex items-center gap-2 rounded-lg border border-purple-400/10 bg-purple-500/5 px-2.5 py-2 transition-all duration-200 hover:border-purple-400/30 hover:bg-purple-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-purple-500/15 text-[0.6rem] font-bold text-purple-400 sm:text-xs">VA</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Visual Aide</span>
+              {/* VA */}
+              <div className="group flex items-center gap-3 rounded-xl border border-purple-400/10 bg-purple-500/5 px-3 py-2.5 transition-all duration-300 hover:border-purple-400/30 hover:bg-purple-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-500/15 text-base sm:h-9 sm:w-9">
+                  👁️
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-purple-400">VA</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Visual Aide
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Diagrams, reference charts & visual guides</p>
+                </div>
               </div>
-              <div className="group flex items-center gap-2 rounded-lg border border-rose-400/10 bg-rose-500/5 px-2.5 py-2 transition-all duration-200 hover:border-rose-400/30 hover:bg-rose-500/10 sm:px-3 sm:py-2.5">
-                <span className="inline-flex h-6 min-w-[2rem] items-center justify-center rounded bg-rose-500/15 text-[0.6rem] font-bold text-rose-400 sm:text-xs">PCA</span>
-                <span className="text-[0.6rem] leading-tight text-slate-400 group-hover:text-slate-300 sm:text-[0.7rem]">Process Change Approval</span>
+              {/* PCA */}
+              <div className="group flex items-center gap-3 rounded-xl border border-rose-400/10 bg-rose-500/5 px-3 py-2.5 transition-all duration-300 hover:border-rose-400/30 hover:bg-rose-500/10 hover:translate-x-1 sm:px-4 sm:py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-rose-500/15 text-base sm:h-9 sm:w-9">
+                  🔄
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-white sm:text-sm">
+                    <span className="text-rose-400">PCA</span>
+                    <span className="mx-1.5 text-slate-600">-</span>
+                    Process Change Approval
+                  </p>
+                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Change requests & approval documentation</p>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Info Box */}
-          <div className="mt-2 rounded-lg border border-white/10 bg-black/30 p-2.5 backdrop-blur sm:mt-3 sm:rounded-xl sm:p-4 animate-slide-up">
-            <p className="text-2xs sm:text-xs text-slate-400">
-              <span className="font-semibold text-primary">💡 Demo Credentials:</span> Use your registered email and password to access the vault.
-            </p>
           </div>
         </div>
       </div>
