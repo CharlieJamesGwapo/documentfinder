@@ -61,6 +61,15 @@ export const AuthProvider = ({ children }) => {
   const register = async (payload) => {
     try {
       const { data } = await api.post('/auth/register', payload);
+
+      if (data.autoVerified && data.token) {
+        setAuthToken(data.token);
+        localStorage.setItem(TOKEN_KEY, data.token);
+        setUser(data.user);
+        toast.success('Account created! Welcome aboard.');
+        return { ...data, autoVerified: true };
+      }
+
       toast.success('Account created. Check your email for the verification code.');
       return data;
     } catch (error) {

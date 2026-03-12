@@ -114,6 +114,12 @@ const Register = () => {
       const result = await register(payload);
       setForm(initialForm);
       setPhotoData('');
+
+      if (result.autoVerified) {
+        navigate('/');
+        return;
+      }
+
       setRegisteredEmail(result.email);
       setShowOtpModal(true);
     } catch (error) {

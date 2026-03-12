@@ -94,6 +94,8 @@ router.post(
 
       console.log('📝 Composed name:', composedName);
 
+      const emailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASS;
+
       const user = await User.create({
         firstName: firstName || '',
         middleName: middleName || '',
@@ -102,7 +104,8 @@ router.post(
         name: composedName,
         email,
         password,
-        role: role === 'admin' ? 'admin' : 'user'
+        role: role === 'admin' ? 'admin' : 'user',
+        isVerified: !emailConfigured
       });
 
       console.log('✅ User created:', user.id, 'Full name:', user.name);
@@ -122,13 +125,15 @@ router.post(
         return res.status(500).json({ message: 'Unable to process profile photo. Please retry with a smaller image.' });
       }
 
-      console.log('📧 Sending registration OTP email to:', user.email);
-      try {
-        await sendAndStoreOtp({ user, isRegistration: true });
-      } catch (emailError) {
-        console.warn('⚠️ Email failed but registration continues:', emailError.message);
+      if (emailConfigured) {
+        console.log('📧 Sending registration OTP email to:', user.email);
+        try {
+          await sendAndStoreOtp({ user, isRegistration: true });
+        } catch (emailError) {
+          console.warn('⚠️ Email failed but registration continues:', emailError.message);
+        }
       }
-      
+
       await logAudit({
         userId: user.id,
         action: 'USER_REGISTERED',
@@ -137,6 +142,18 @@ router.post(
       });
 
       console.log('✅ Registration complete for:', user.email);
+
+      if (user.isVerified) {
+        await user.update({ lastLogin: new Date() });
+        const token = signToken(user);
+        const safeUser = await User.findByPk(user.id);
+        return res.status(201).json({
+          token,
+          user: safeUser,
+          autoVerified: true
+        });
+      }
+
       res.status(201).json({
         requiresVerification: true,
         email: user.email
@@ -173,16 +190,22 @@ router.post(
       }
 
       if (!user.isVerified) {
-        try {
-          await sendAndStoreOtp({ user });
-        } catch (emailError) {
-          console.warn('⚠️ Email failed but OTP stored:', emailError.message);
+        const emailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASS;
+
+        if (!emailConfigured) {
+          await user.update({ isVerified: true });
+        } else {
+          try {
+            await sendAndStoreOtp({ user });
+          } catch (emailError) {
+            console.warn('⚠️ Email failed but OTP stored:', emailError.message);
+          }
+          return res.status(403).json({
+            message: 'Account not verified. A fresh code was sent to your email.',
+            requiresVerification: true,
+            email: user.email
+          });
         }
-        return res.status(403).json({
-          message: 'Account not verified. A fresh code was sent to your email.',
-          requiresVerification: true,
-          email: user.email
-        });
       }
 
       await user.update({ lastLogin: new Date() });
