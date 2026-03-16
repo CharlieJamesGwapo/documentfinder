@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -24,18 +23,14 @@ const Footer = () => {
                 <span className="text-xs font-bold uppercase tracking-[0.3em] text-primary">Tesla Ops</span>
                 <span className="text-xs text-slate-500">Document Finder</span>
               </div>
-              <div className="flex items-center gap-4 text-xs text-slate-500">
-                <Link to="/" className="transition hover:text-white">Dashboard</Link>
-                <Link to="/profile" className="transition hover:text-white">Profile</Link>
-              </div>
+              <p className="text-xs text-slate-600">
+                Designed by <span className="text-slate-400 font-medium">Melanie Birmingham</span> · Quality Engineering
+              </p>
             </div>
 
-            <div className="border-t border-white/5 pt-3 flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between">
+            <div className="border-t border-white/5 pt-3 text-center">
               <p className="text-xs text-slate-500">
                 © {currentYear} Tesla Manufacturing & Quality Vault. All rights reserved.
-              </p>
-              <p className="text-xs text-slate-600">
-                Designed by <span className="text-slate-400">Melanie Birmingham</span> · Quality Engineering
               </p>
             </div>
           </div>

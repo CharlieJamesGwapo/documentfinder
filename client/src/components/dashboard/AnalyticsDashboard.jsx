@@ -247,26 +247,27 @@ const AnalyticsDashboard = ({
               key={dt.code}
               type="button"
               onClick={() => onTypeClick?.(dt.code)}
-              className={`group relative flex flex-col items-center rounded-xl border p-2.5 transition-all duration-200 touch-manipulation sm:rounded-2xl sm:p-3.5
+              className={`group relative flex flex-col items-center rounded-xl border p-2.5 touch-manipulation sm:rounded-2xl sm:p-3.5
+                transition-all duration-300 ease-out
                 ${isActive
-                  ? 'border-primary/50 bg-primary/10 ring-2 ring-primary/40 shadow-lg shadow-primary/10'
+                  ? 'border-primary/50 bg-primary/10 ring-2 ring-primary/30 shadow-xl shadow-primary/15 scale-105'
                   : hasActive
-                    ? 'border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 active:scale-95 opacity-50 hover:opacity-80'
-                    : 'border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 active:scale-95'
+                    ? 'border-white/5 bg-white/[0.02] opacity-40 hover:opacity-70 hover:bg-white/[0.04] active:scale-95'
+                    : 'border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 hover:shadow-md hover:-translate-y-0.5 active:scale-95'
                 }`}
             >
               {isActive && (
-                <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-primary sm:h-2.5 sm:w-2.5">
-                  <span className="absolute inset-0 animate-ping rounded-full bg-primary/60" />
+                <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-primary sm:h-3 sm:w-3">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-primary/50" />
                 </span>
               )}
               {Icon && (
-                <Icon className={`h-4 w-4 transition-all duration-200 group-hover:scale-110 sm:h-5 sm:w-5 ${isActive ? 'text-primary' : 'text-slate-400'}`} />
+                <Icon className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 group-hover:scale-110 ${isActive ? 'text-primary drop-shadow-[0_0_6px_rgba(239,68,68,0.4)]' : 'text-slate-400'}`} />
               )}
-              <span className={`mt-1 text-2xs font-bold sm:text-xs ${isActive ? 'text-primary' : 'text-slate-400'}`}>
+              <span className={`mt-1 text-2xs font-bold sm:text-xs transition-colors duration-300 ${isActive ? 'text-primary' : 'text-slate-400'}`}>
                 {dt.code}
               </span>
-              <span className={`font-heading text-lg leading-none sm:text-xl ${isActive ? 'text-white' : 'text-slate-300'}`}>
+              <span className={`font-heading text-lg leading-none sm:text-xl transition-colors duration-300 ${isActive ? 'text-white' : 'text-slate-300'}`}>
                 {count}
               </span>
             </button>
@@ -283,7 +284,7 @@ const AnalyticsDashboard = ({
                 {activeType}
               </span>
               <ChevronRight className="h-3 w-3 text-slate-600" />
-              <span className="text-2xs text-slate-400 sm:text-xs">
+              <span className={`text-2xs sm:text-xs transition-colors duration-200 ${activeCategory ? 'text-primary font-medium' : 'text-slate-400'}`}>
                 {activeCategory || 'Select a department'}
               </span>
             </div>
@@ -291,7 +292,7 @@ const AnalyticsDashboard = ({
               <button
                 type="button"
                 onClick={() => onCategoryClick?.('')}
-                className="flex items-center gap-1 rounded-md border border-white/5 bg-white/[0.03] px-2 py-0.5 text-2xs text-slate-500 transition hover:bg-white/[0.06] hover:text-white sm:text-xs"
+                className="flex items-center gap-1 rounded-md border border-white/5 bg-white/[0.03] px-2 py-0.5 text-2xs text-slate-500 transition-all duration-200 hover:bg-white/[0.06] hover:text-white sm:text-xs"
               >
                 Clear
                 <X className="h-3 w-3" />
@@ -299,22 +300,27 @@ const AnalyticsDashboard = ({
             )}
           </div>
           <div className="grid grid-cols-4 gap-1.5 px-3 pb-3 sm:grid-cols-8 sm:gap-2 sm:px-4 sm:pb-4">
-            {DEPARTMENTS.map((dept) => {
+            {DEPARTMENTS.map((dept, idx) => {
               const DeptIcon = dept.icon;
               const isDeptActive = activeCategory === dept.key;
+              const hasDeptActive = !!activeCategory;
 
               return (
                 <button
                   key={dept.key}
                   type="button"
                   onClick={() => onCategoryClick?.(isDeptActive ? '' : dept.key)}
-                  className={`group flex flex-col items-center gap-1 rounded-lg border p-2 transition-all duration-150 touch-manipulation sm:rounded-xl sm:p-3
+                  style={{ animationDelay: `${idx * 40}ms` }}
+                  className={`group flex flex-col items-center gap-1 rounded-lg border p-2 touch-manipulation sm:rounded-xl sm:p-3
+                    transition-all duration-300 ease-out animate-scale-in
                     ${isDeptActive
-                      ? 'border-primary/40 bg-primary/10 text-primary shadow-md shadow-primary/5'
-                      : 'border-white/5 bg-white/[0.02] text-slate-500 hover:border-white/10 hover:bg-white/[0.05] hover:text-white active:scale-95'
+                      ? 'border-primary/40 bg-primary/10 text-primary shadow-lg shadow-primary/10 scale-105 ring-1 ring-primary/30'
+                      : hasDeptActive
+                        ? 'border-white/5 bg-white/[0.02] text-slate-500 opacity-40 hover:opacity-70 hover:bg-white/[0.04] active:scale-95'
+                        : 'border-white/5 bg-white/[0.02] text-slate-500 hover:border-white/10 hover:bg-white/[0.05] hover:text-white hover:-translate-y-0.5 hover:shadow-md active:scale-95'
                     }`}
                 >
-                  <DeptIcon className={`h-4 w-4 transition-transform duration-150 group-hover:scale-110 sm:h-5 sm:w-5 ${isDeptActive ? 'text-primary' : ''}`} />
+                  <DeptIcon className={`h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 group-hover:scale-110 ${isDeptActive ? 'text-primary drop-shadow-[0_0_6px_rgba(239,68,68,0.3)]' : ''}`} />
                   <span className="text-center text-[0.55rem] font-medium leading-tight sm:text-2xs">{dept.label}</span>
                 </button>
               );
