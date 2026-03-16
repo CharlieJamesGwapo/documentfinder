@@ -10,7 +10,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import routes from './routes/index.js';
-import { sequelize, User } from './models/index.js';
+import { sequelize, User, Document } from './models/index.js';
 
 dotenv.config();
 
@@ -181,15 +181,75 @@ const seedDefaultUser = async () => {
   }
 };
 
+const DEPT_LIST = ['Battery Module', 'Battery Pack', 'Drive Unit', 'Energy', 'Mega Pack', 'Power Wall', 'PCS', 'Semi'];
+const PDF_URL = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+const DOCX_URL = 'https://calibre-ebook.com/downloads/demos/demo.docx';
+
+const TYPE_SEED = {
+  MN: { suffixes: ['Line Shutdown Notice','Material Change Alert','Shift Schedule Update','Equipment Installation','Ramp-Up Plan','Safety Protocol Update','Tooling Changeover Notice','Maintenance Window Alert'], tags: ['manufacturing','notice'], text: 'MANUFACTURING NOTICE\n\nThis manufacturing notice covers critical updates for the {dept} department.\n\nACTION REQUIRED:\n- Review affected procedures\n- Update work instructions\n- Notify shift supervisors\n- Complete training by effective date\n\nAPPROVED BY: Manufacturing Engineering Director' },
+  MI: { suffixes: ['Assembly Procedure','Installation Guide','Operation Manual','Calibration Steps','Testing Protocol','Setup Instructions','Maintenance Procedure','Changeover Guide'], tags: ['manufacturing','instructions'], text: 'MANUFACTURING INSTRUCTIONS\n\nStep-by-step manufacturing instructions for the {dept} area.\n\n1. Verify all materials and tools\n2. Confirm workstation setup\n3. Follow assembly sequence\n4. Perform in-process quality checks\n5. Document completion in production log\n\nAPPROVED BY: Manufacturing Engineering' },
+  QI: { suffixes: ['Incoming Inspection','Weld Quality Check','Paint Inspection Standards','Audit Checklist','Validation Procedure','Dimensional Check','Functional Test','Material Verification'], tags: ['quality','inspection'], text: 'QUALITY INSTRUCTIONS\n\nInspection criteria for the {dept} area.\n\n- Visual inspection against reference\n- Dimensional verification per drawing\n- Functional test per specification\n- Documentation in quality system\n\nAPPROVED BY: Quality Engineering Director' },
+  QAN: { suffixes: ['Torque Non-Conformance','Material Deviation Alert','Defect Cluster Alert','Fastener Recall Notice','Calibration Error Report','Weld Defect Alert','Surface Finish Issue','Assembly Gap Alert'], tags: ['quality','alert'], text: 'QUALITY ALERT NOTICE\n\nALERT LEVEL: HIGH\nDEPARTMENT: {dept}\n\nImmediate action required.\n\n1. Stop affected process\n2. Quarantine suspect material\n3. Notify quality engineering\n4. Begin root cause analysis\n\nISSUED BY: Quality Engineering' },
+  VA: { suffixes: ['Connector ID Guide','PPE Requirements','Torque Sequence Diagram','Fluid Fill Chart','Error Code Reference','Assembly Diagram','Routing Map','Inspection Points'], tags: ['visual','reference'], text: 'VISUAL AIDE\n\nQuick reference for the {dept} department.\n\n- Follow color-coded indicators\n- Check reference standards before each shift\n- Report discrepancies immediately\n\nAPPROVED BY: Engineering' },
+  PCA: { suffixes: ['Weld Parameter Update','Line Speed Increase','Adhesive Introduction','Vision Inspection Deploy','Packaging Change','Robot Program Update','Fixture Modification','Material Substitution'], tags: ['process-change','approval'], text: 'PROCESS CHANGE APPROVAL\n\nSTATUS: APPROVED\nDEPARTMENT: {dept}\n\nValidation: PASSED\nSafety review: No concerns\n\nTrain affected operators and monitor for 2 weeks.\n\nAPPROVED BY: Process Engineering, Quality, Manufacturing' }
+};
+
+const seedDocuments = async () => {
+  try {
+    const admin = await User.findOne({ where: { role: 'admin' } });
+    if (!admin) return;
+
+    const docCount = await Document.count();
+    // Only auto-seed if DB has fewer than 48 documents (fresh or outdated)
+    if (docCount >= 48) {
+      console.log(`[OK] Documents already seeded (${docCount} found)`);
+      return;
+    }
+
+    const urls = [PDF_URL, DOCX_URL];
+    let created = 0;
+
+    for (const [type, data] of Object.entries(TYPE_SEED)) {
+      for (let i = 0; i < DEPT_LIST.length; i++) {
+        const dept = DEPT_LIST[i];
+        const title = `${dept} - ${data.suffixes[i]}`;
+        const existing = await Document.findOne({ where: { title }, paranoid: false });
+        if (existing) continue;
+
+        await Document.create({
+          title,
+          description: `${data.suffixes[i]} for the ${dept} department.`,
+          documentType: type,
+          category: dept,
+          tags: [...data.tags, dept.toLowerCase().replace(/\s+/g, '-')],
+          version: `${Math.floor(i / 3) + 1}.${i % 3}.0`,
+          fileUrl: urls[i % urls.length],
+          filePublicId: `seed_${type.toLowerCase()}_${dept.toLowerCase().replace(/\s+/g, '_')}_${String(i + 1).padStart(3, '0')}`,
+          fileType: i % 2 === 0 ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          fileSize: 15000 + Math.floor(Math.random() * 30000),
+          textContent: data.text.replace(/\{dept\}/g, dept),
+          createdBy: admin.id
+        });
+        created++;
+      }
+    }
+
+    if (created > 0) {
+      console.log(`[OK] Auto-seeded ${created} documents (6 types × 8 departments)`);
+    }
+  } catch (error) {
+    console.error('[WARN] Error auto-seeding documents:', error.message);
+  }
+};
+
 const bootstrap = async () => {
   try {
     await sequelize.authenticate();
     console.log('[OK] Database connection established');
-    // In production, sync without alter to avoid modifying existing tables
-    // Use migrations for schema changes in production
     await sequelize.sync({ alter: true });
     await seedAdminUser();
     await seedDefaultUser();
+    await seedDocuments();
     server.listen(PORT, () => {
       console.log(`[OK] Server listening on port ${PORT}`);
     });
