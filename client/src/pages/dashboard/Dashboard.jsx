@@ -391,46 +391,51 @@ const Dashboard = () => {
 
         {/* Main Content - Documents */}
         <div className="space-y-3 sm:space-y-4 md:space-y-6 lg:col-span-3 animate-slideInRight">
-          {/* Show prompt when type selected but no department */}
-          {selectedType && !filters.category ? (
+          {/* Default state — no selection yet */}
+          {!selectedType && !filters.documentType && (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-[#15161b] py-20 px-6 text-center shadow-lg animate-fadeIn">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 mb-5">
+                <svg className="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              </div>
+              <h3 className="font-heading text-xl text-white sm:text-2xl">Browse Documents</h3>
+              <p className="mt-2 max-w-md text-xs text-slate-400 sm:text-sm leading-relaxed">
+                Select a <span className="font-semibold text-primary">document type</span> above (MN, MI, QI, QAN, VA, PCA), then choose a <span className="font-semibold text-white">department</span> to view documents.
+              </p>
+            </div>
+          )}
+
+          {/* Type selected but no department */}
+          {selectedType && !filters.category && (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-[#15161b] py-16 px-6 text-center shadow-lg animate-fadeIn">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 mb-4">
                 <svg className="h-7 w-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
               </div>
               <h3 className="font-heading text-lg text-white sm:text-xl">Select a Department</h3>
               <p className="mt-2 max-w-sm text-xs text-slate-400 sm:text-sm">
-                Choose a department above to view <span className="font-semibold text-primary">{selectedType}</span> documents for that area.
+                Choose a department above to view <span className="font-semibold text-primary">{selectedType}</span> documents.
               </p>
             </div>
-          ) : (
-          <>
-          {!selectedType && (
-            <RecentDocuments
-              documents={overview?.recentDocuments || []}
-              onPreview={handlePreviewDocument}
-              onDownload={handleDownloadDocument}
-              onEdit={isAdmin ? handleEditDocument : undefined}
-              onDelete={isAdmin ? handleDeleteDocument : undefined}
-              onToggleFavorite={toggleFavorite}
-              isFavorite={isFavorite}
-            />
           )}
-          <DocumentTable
-            documents={documents}
-            loading={loadingDocuments}
-            pagination={pagination}
-            onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
-            onPreview={handlePreviewDocument}
-            onDownload={handleDownloadDocument}
-            onEdit={isAdmin ? handleEditDocument : undefined}
-            onDelete={isAdmin ? handleDeleteDocument : undefined}
-            filters={filters}
-            onImported={refreshAll}
-            isAdmin={isAdmin}
-            onToggleFavorite={toggleFavorite}
-            isFavorite={isFavorite}
-          />
-          </>
+
+          {/* Documents shown only when both type + department are selected */}
+          {filters.documentType && filters.category && (
+            <div className="animate-fadeIn">
+              <DocumentTable
+                documents={documents}
+                loading={loadingDocuments}
+                pagination={pagination}
+                onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
+                onPreview={handlePreviewDocument}
+                onDownload={handleDownloadDocument}
+                onEdit={isAdmin ? handleEditDocument : undefined}
+                onDelete={isAdmin ? handleDeleteDocument : undefined}
+                filters={filters}
+                onImported={refreshAll}
+                isAdmin={isAdmin}
+                onToggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
+              />
+            </div>
           )}
         </div>
       </div>
