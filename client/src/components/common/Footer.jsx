@@ -15,146 +15,28 @@ const Footer = () => {
 
   return (
     <footer className="relative border-t border-white/5 bg-gradient-to-b from-[#0a0b10] to-[#050607] backdrop-blur-xl">
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-0 right-1/4 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-      </div>
-
-      <div className="relative">
-        {/* Main Footer Content */}
-        <div className="border-b border-white/5 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {/* Brand + Document Types */}
-              <div className="space-y-4 sm:col-span-2">
-                <div className="flex items-center gap-2">
-                  <img src="/logo.png" alt="Document Finder Logo" className="h-8 w-8 object-contain drop-shadow-lg" />
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary">Tesla Ops</p>
-                    <p className="text-xs text-slate-400">Document Finder</p>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-500">
-                  Secure document management and quality control for Tesla operations.
-                </p>
-
-                {/* Document Types Highlight */}
-                <div className="space-y-2.5">
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-slate-400">Supported Document Types</p>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">MN</span>
-                      <span className="text-[0.65rem] text-slate-400">Manufacturing Notice</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">MI</span>
-                      <span className="text-[0.65rem] text-slate-400">Manufacturing Instructions</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">QI</span>
-                      <span className="text-[0.65rem] text-slate-400">Quality Instructions</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">QAN</span>
-                      <span className="text-[0.65rem] text-slate-400">Quality Alert Notice</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">VA</span>
-                      <span className="text-[0.65rem] text-slate-400">Visual Aide</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-5 w-9 items-center justify-center rounded bg-white/10 text-[0.6rem] font-bold text-slate-300 border border-white/20">PCA</span>
-                      <span className="text-[0.65rem] text-slate-400">Process Change Approval</span>
-                    </div>
-                  </div>
-                </div>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-4 sm:gap-3">
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+              <div className="flex items-center gap-2">
+                <img src="/logo.png" alt="Document Finder Logo" className="h-6 w-6 object-contain" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-primary">Tesla Ops</span>
+                <span className="text-xs text-slate-500">Document Finder</span>
               </div>
-
-              {/* Quick Links */}
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-300">Quick Links</p>
-                <ul className="space-y-2">
-                  <li>
-                    <Link to="/" className="text-xs text-slate-400 transition hover:text-primary hover:underline underline-offset-2">
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/profile" className="text-xs text-slate-400 transition hover:text-primary hover:underline underline-offset-2">
-                      Profile
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Features */}
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-300">Features</p>
-                <ul className="space-y-2 text-xs text-slate-400">
-                  <li className="flex items-center gap-2">
-                    <svg className="h-3 w-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                    <span>Secure JWT Auth</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <svg className="h-3 w-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                    <span>Role-Based Access</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <svg className="h-3 w-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                    <span>Live Previews</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <svg className="h-3 w-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                    <span>AI Assistant</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Contact */}
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-300">Contact</p>
-                <div className="space-y-2 text-xs text-slate-400">
-                  <p>Tesla Giga Nevada</p>
-                  <p>Nevada, USA</p>
-                  <a href="mailto:contact@tesla.com" className="flex items-center gap-1 transition hover:text-primary">
-                    contact@tesla.com
-                  </a>
-                </div>
+              <div className="flex items-center gap-4 text-xs text-slate-500">
+                <Link to="/" className="transition hover:text-white">Dashboard</Link>
+                <Link to="/profile" className="transition hover:text-white">Profile</Link>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Credits */}
-        <div className="border-b border-white/5 px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="space-y-4 text-center sm:text-left">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.3em] text-primary/80">Created By</p>
-                <p className="font-heading text-lg text-white">Melanie Chavaria Birmingham</p>
-                <p className="text-xs text-slate-400">Quality Engineering · Tesla Operations</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="space-y-4">
-              <div className="flex flex-col gap-3 text-center text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-                <p>© {currentYear} Tesla Manufacturing & Quality Vault. All rights reserved.</p>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="inline-flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  <span>System Status: Operational</span>
-                </div>
-              </div>
-
-              <div className="border-t border-white/5 pt-4 text-center text-xs text-slate-600">
-                <p>
-                  Designed & Developed by <span className="font-semibold text-slate-400">Melanie Chavaria Birmingham</span> · Quality Engineering Team
-                </p>
-                <p className="mt-1">Document Finder v1.0 · Powered by Tesla Operations</p>
-              </div>
+            <div className="border-t border-white/5 pt-3 flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between">
+              <p className="text-xs text-slate-500">
+                © {currentYear} Tesla Manufacturing & Quality Vault. All rights reserved.
+              </p>
+              <p className="text-xs text-slate-600">
+                Designed by <span className="text-slate-400">Melanie Birmingham</span> · Quality Engineering
+              </p>
             </div>
           </div>
         </div>

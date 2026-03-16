@@ -128,7 +128,7 @@ const seedAdminUser = async () => {
     if (!existingAdmin) {
       await User.create({
         firstName: 'Melanie',
-        middleName: 'Chavaria',
+        middleName: '',
         lastName: 'Birmingham',
         suffix: '',
         email: 'melanie@admin.com',

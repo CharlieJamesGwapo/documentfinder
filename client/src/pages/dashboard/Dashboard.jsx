@@ -341,7 +341,15 @@ const Dashboard = () => {
 
       {/* Analytics Dashboard */}
       <div className="animate-fadeIn">
-        <AnalyticsDashboard overview={overview} loading={loadingOverview} documents={documents} />
+        <AnalyticsDashboard
+          overview={overview}
+          loading={loadingOverview}
+          documents={documents}
+          activeType={filters.documentType}
+          onTypeClick={(type) => handleFilterChange({ documentType: filters.documentType === type ? '' : type, category: '' })}
+          activeCategory={filters.category}
+          onCategoryClick={(cat) => handleFilterChange({ category: filters.category === cat ? '' : cat })}
+        />
       </div>
 
       {/* Main Content - Responsive Grid */}

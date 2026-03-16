@@ -106,14 +106,8 @@ const Login = () => {
 
   return (
     <div className="relative flex min-h-screen flex-col bg-secondary safe-area-top safe-area-bottom touch-manipulation">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary/20 blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl animate-pulse-slow" style={{animationDelay: '1s'}} />
-      </div>
-
       {/* Main container */}
-      <div className="relative flex flex-1 flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-8 lg:px-8">
+      <div className="flex flex-1 flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-8 lg:px-8">
         <div className="w-full max-w-md sm:max-w-lg animate-fade-in">
           {/* Card */}
           <div className="rounded-2xl border border-white/10 bg-[#0e0f13]/95 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-3xl animate-scale-in">
@@ -121,12 +115,11 @@ const Login = () => {
             <div className="border-b border-white/5 px-4 py-4 sm:px-8 sm:py-8 lg:py-10">
               <div className="flex flex-col items-center text-center">
                 {/* Tesla Logo */}
-                <div className="relative mb-4 sm:mb-6">
-                  <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="mb-4 sm:mb-6">
                   <img
                     src="/logo.png"
                     alt="Tesla"
-                    className="relative h-16 w-16 object-contain sm:h-20 sm:w-20 drop-shadow-lg transition-transform duration-300 hover:scale-110"
+                    className="h-16 w-16 object-contain sm:h-20 sm:w-20"
                   />
                 </div>
 
@@ -168,11 +161,6 @@ const Login = () => {
                     }`}
                     placeholder="engineer@tesla.com"
                   />
-                  {form.email && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                    </span>
-                  )}
                 </div>
               </div>
 
@@ -204,11 +192,6 @@ const Login = () => {
                     }`}
                     placeholder="••••••••"
                   />
-                  {form.password && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                    </span>
-                  )}
                 </div>
               </div>
 
@@ -218,18 +201,14 @@ const Login = () => {
                 disabled={loading || !form.email || !form.password}
                 className="group relative mt-4 w-full overflow-hidden rounded-lg bg-primary py-2.5 text-xs font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/50 disabled:cursor-not-allowed disabled:opacity-50 active:scale-95 sm:rounded-xl sm:py-3.5 sm:text-sm touch-manipulation tap-highlight"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                <span className="relative flex items-center justify-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   {loading ? (
                     <>
                       <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                       Authenticating…
                     </>
                   ) : (
-                    <>
-                      Enter Vault
-                      <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </>
+                    'Sign In'
                   )}
                 </span>
               </button>
@@ -266,103 +245,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Document Types Showcase */}
-          <div className="mt-3 rounded-2xl border border-white/10 bg-gradient-to-b from-[#0e0f13]/95 to-[#12131a]/95 p-4 backdrop-blur-xl sm:mt-6 sm:rounded-3xl sm:p-6 animate-slide-up">
-            <div className="mb-4 text-center sm:mb-5">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-primary/80 sm:text-xs">
-                Supported Document Types
-              </p>
-              <p className="mt-1 text-[0.6rem] text-slate-500 sm:text-xs">
-                6 standardized categories for manufacturing & quality ops
-              </p>
-            </div>
-            <div className="space-y-2 sm:space-y-2.5">
-              {/* MN */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  MN
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">MN</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Manufacturing Notice
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Critical alerts & notifications for production lines</p>
-                </div>
-              </div>
-              {/* MI */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  MI
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">MI</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Manufacturing Instructions
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Step-by-step assembly & operation procedures</p>
-                </div>
-              </div>
-              {/* QI */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  QI
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">QI</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Quality Instructions
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Inspection standards & quality control procedures</p>
-                </div>
-              </div>
-              {/* QAN */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  QAN
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">QAN</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Quality Alert Notice
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Non-conformance alerts & containment actions</p>
-                </div>
-              </div>
-              {/* VA */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  VA
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">VA</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Visual Aide
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Diagrams, reference charts & visual guides</p>
-                </div>
-              </div>
-              {/* PCA */}
-              <div className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:translate-x-1 sm:px-4 sm:py-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-slate-300 sm:h-9 sm:w-9">
-                  PCA
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-white sm:text-sm">
-                    <span className="text-slate-300">PCA</span>
-                    <span className="mx-1.5 text-slate-600">-</span>
-                    Process Change Approval
-                  </p>
-                  <p className="text-[0.6rem] text-slate-500 sm:text-xs">Change requests & approval documentation</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 

@@ -18,7 +18,7 @@ const seedAdmin = async () => {
     } else {
       await User.create({
         firstName: 'Melanie',
-        middleName: 'Chavaria',
+        middleName: '',
         lastName: 'Birmingham',
         suffix: '',
         email: 'melanie@admin.com',
@@ -32,7 +32,7 @@ const seedAdmin = async () => {
       console.log('[OK] Admin account created successfully!');
       console.log('Email: melanie@admin.com');
       console.log("Password: Ma'am123");
-      console.log('Name: Melanie Chavaria Birmingham');
+      console.log('Name: Melanie Birmingham');
       console.log('Role: admin');
       console.log('[OK] Verified: Yes');
     }

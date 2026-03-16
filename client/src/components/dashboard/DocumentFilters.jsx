@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { Filter, RotateCcw, Search, X } from 'lucide-react';
+import { RotateCcw, X } from 'lucide-react';
 import { getAllDocumentTypes, getDocumentTypeConfig } from '../../constants/documentTypes.js';
 
 const FILE_TYPE_OPTIONS = [
@@ -61,19 +61,16 @@ const DocumentFilters = ({ filters, onChange, onReset, categories = [], tags = [
   return (
     <section className="rounded-lg border border-white/5 bg-[#1c1d22] p-2.5 shadow-lg shadow-black/40 sm:rounded-2xl sm:p-6 animate-slide-up touch-manipulation">
       <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:mb-6 sm:flex-row sm:items-center sm:gap-3">
-        <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-primary/70 sm:h-5 sm:w-5" />
-          <div>
-            <p className="text-2xs uppercase tracking-[0.35em] text-primary/70 sm:text-xs">Filters</p>
-            <h3 className="font-heading text-base text-white sm:text-xl lg:text-2xl">
-              Search documents
-              {activeCount > 0 && (
-                <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-2xs font-bold text-white align-middle">
-                  {activeCount}
-                </span>
-              )}
-            </h3>
-          </div>
+        <div>
+          <p className="text-2xs uppercase tracking-[0.35em] text-primary/70 sm:text-xs">Filters</p>
+          <h3 className="font-heading text-base text-white sm:text-xl lg:text-2xl">
+            Search documents
+            {activeCount > 0 && (
+              <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-2xs font-bold text-white align-middle">
+                {activeCount}
+              </span>
+            )}
+          </h3>
         </div>
         <button
           type="button"
@@ -110,10 +107,7 @@ const DocumentFilters = ({ filters, onChange, onReset, categories = [], tags = [
       <div className="space-y-2.5 sm:space-y-4">
         <label className="space-y-1.5 text-2xs sm:space-y-2 sm:text-sm">
           <span className="flex items-center justify-between text-slate-300">
-            <span className="flex items-center gap-1.5">
-              <Search className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span>Keyword</span>
-            </span>
+            <span>Keyword</span>
             {isSearching && (
               <span className="flex items-center gap-1 text-2xs text-primary sm:text-xs">
                 <div className="h-2 w-2 animate-spin rounded-full border border-primary border-t-transparent" />

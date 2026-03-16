@@ -21,14 +21,6 @@ const StatCard = ({ label, value, sublabel, accent, loading }) => (
   </div>
 );
 
-const formatBytes = (bytes) => {
-  if (!bytes) return '0 MB';
-  const units = ['B', 'KB', 'MB', 'GB'];
-  const idx = Math.floor(Math.log(bytes) / Math.log(1024));
-  const value = bytes / 1024 ** idx;
-  return `${value.toFixed(1)} ${units[idx]}`;
-};
-
 const StatsGrid = ({ overview, loading }) => (
   <section>
     <div className="mb-3 flex items-center justify-between sm:mb-4">
@@ -42,7 +34,7 @@ const StatsGrid = ({ overview, loading }) => (
       <SkeletonStats />
     ) : (
       <>
-        <div className="grid gap-2 sm:gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-2 sm:gap-4 grid-cols-2 lg:grid-cols-3">
           <StatCard
             label="Total Documents"
             value={overview?.totals?.totalDocuments ?? 0}
@@ -61,12 +53,6 @@ const StatsGrid = ({ overview, loading }) => (
             value={overview?.totals?.qualityCount ?? 0}
             sublabel="QI + QAN documents"
             accent="quality"
-            loading={loading}
-          />
-          <StatCard
-            label="Cloud Storage"
-            value={formatBytes(overview?.storageBytes)}
-            sublabel="Total file storage"
             loading={loading}
           />
         </div>

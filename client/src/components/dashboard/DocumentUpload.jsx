@@ -149,12 +149,9 @@ const DocumentUpload = ({ onUploaded, categorySuggestions = [] }) => {
 
   return (
     <section className="rounded-lg border border-white/5 bg-gradient-to-br from-[#1f2026] to-[#15161b] p-3 shadow-glow sm:rounded-2xl sm:p-6">
-      <div className="flex items-center gap-2 mb-2">
-        <Upload className="h-4 w-4 text-primary/70 sm:h-5 sm:w-5" />
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Upload</p>
-          <h3 className="font-heading text-lg text-white sm:text-xl lg:text-2xl">New document</h3>
-        </div>
+      <div className="mb-2">
+        <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Upload</p>
+        <h3 className="font-heading text-lg text-white sm:text-xl lg:text-2xl">New document</h3>
       </div>
       <p className="mb-3 text-2xs text-slate-400 sm:mb-5 sm:text-xs">Upload manufacturing, quality, or process documents</p>
 

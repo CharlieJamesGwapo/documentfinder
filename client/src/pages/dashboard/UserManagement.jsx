@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import { Shield, Users, Pencil, Trash2, Search, UserPlus } from 'lucide-react';
+import { Users, Pencil, Trash2, Search } from 'lucide-react';
 import api from '../../lib/api.js';
 import { useAuth } from '../../context/AuthContext.jsx';
 
@@ -158,10 +158,7 @@ const UserManagement = () => {
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
-            <h1 className="font-heading text-2xl text-white sm:text-3xl">User Management</h1>
-          </div>
+          <h1 className="font-heading text-2xl text-white sm:text-3xl">User Management</h1>
           <p className="mt-1 text-xs text-slate-400 sm:text-sm">Manage user accounts, roles, and permissions</p>
         </div>
         <div className="flex gap-2">
@@ -169,7 +166,6 @@ const UserManagement = () => {
             onClick={() => setShowAddUser(true)}
             className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-white transition hover:bg-primary/90 active:scale-95 touch-manipulation sm:rounded-2xl sm:px-6 sm:text-sm"
           >
-            <UserPlus className="h-4 w-4" />
             Add User
           </button>
           <button

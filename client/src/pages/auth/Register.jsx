@@ -175,10 +175,10 @@ const Register = () => {
               <h2 className="mt-4 font-heading text-3xl leading-tight">Tesla Manufacturing & Quality Cloud</h2>
               <p className="mt-3 text-sm text-slate-300">Centralized document control for operations, QA, and engineering. Create an account to upload, review, and approve live procedures.</p>
             </div>
-            <ul className="space-y-4 text-sm text-slate-200">
+            <ul className="space-y-3 text-sm text-slate-300">
               {['Secure JWT authentication', 'Role-based permissions', 'Live previews & instant downloads'].map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-primary/50"><svg className="h-3 w-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg></span>
+                <li key={item} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -395,7 +395,7 @@ const Register = () => {
           Tesla near Nevada, USA · Google Maps
         </a>
         <p className="mt-2 text-[0.8rem] normal-case tracking-normal text-slate-400">
-          Tesla Operations · Melanie Chavaria Birmingham · Quality Engineering
+          Tesla Operations · Melanie Birmingham · Quality Engineering
         </p>
       </footer>
 

@@ -6,12 +6,9 @@ const FavoritesBar = ({ favorites = [], onPreview, onDownload, onToggleFavorite 
 
   return (
     <section className="rounded-2xl border border-white/5 bg-[#15161b] p-4 sm:p-6">
-      <div className="mb-3 flex items-center gap-2">
-        <Star className="h-4 w-4 text-primary fill-primary" />
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Favorites</p>
-          <h3 className="font-heading text-base text-white sm:text-lg">{favorites.length} starred document{favorites.length !== 1 ? 's' : ''}</h3>
-        </div>
+      <div className="mb-3">
+        <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Favorites</p>
+        <h3 className="font-heading text-base text-white sm:text-lg">{favorites.length} starred document{favorites.length !== 1 ? 's' : ''}</h3>
       </div>
 
       <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
