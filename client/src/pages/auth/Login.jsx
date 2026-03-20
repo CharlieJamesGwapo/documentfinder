@@ -1,8 +1,88 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import VerificationModal from '../../components/auth/VerificationModal.jsx';
 import Footer from '../../components/common/Footer.jsx';
+
+const MovingCar = ({ cardRef }) => {
+  const carRef = useRef(null);
+  const animRef = useRef(null);
+  const progressRef = useRef(0);
+
+  useEffect(() => {
+    const car = carRef.current;
+    const card = cardRef.current;
+    if (!car || !card) return;
+
+    const carWidth = 80;
+    const carHeight = 40;
+    const speed = 0.15; // percent per frame
+
+    const animate = () => {
+      const rect = card.getBoundingClientRect();
+      const parentRect = card.parentElement.getBoundingClientRect();
+      const relX = rect.left - parentRect.left;
+      const relY = rect.top - parentRect.top;
+      const w = rect.width;
+      const h = rect.height;
+
+      // Perimeter segments: top, right, bottom, left
+      const perimeter = 2 * (w + h);
+      const p = progressRef.current % 100;
+      const dist = (p / 100) * perimeter;
+
+      let x, y, rotation;
+
+      if (dist <= w) {
+        // Top edge: left to right
+        x = relX + dist - carWidth / 2;
+        y = relY - carHeight / 2;
+        rotation = 0;
+      } else if (dist <= w + h) {
+        // Right edge: top to bottom
+        const d = dist - w;
+        x = relX + w - carWidth / 2;
+        y = relY + d - carHeight / 2;
+        rotation = 90;
+      } else if (dist <= 2 * w + h) {
+        // Bottom edge: right to left
+        const d = dist - w - h;
+        x = relX + w - d - carWidth / 2;
+        y = relY + h - carHeight / 2;
+        rotation = 180;
+      } else {
+        // Left edge: bottom to top
+        const d = dist - 2 * w - h;
+        x = relX - carWidth / 2;
+        y = relY + h - d - carHeight / 2;
+        rotation = 270;
+      }
+
+      car.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+      progressRef.current = (progressRef.current + speed) % 100;
+      animRef.current = requestAnimationFrame(animate);
+    };
+
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
+  }, [cardRef]);
+
+  return (
+    <img
+      ref={carRef}
+      src="/teslacar.jpg"
+      alt=""
+      className="pointer-events-none absolute z-20"
+      style={{
+        width: '80px',
+        height: '40px',
+        objectFit: 'cover',
+        borderRadius: '6px',
+        filter: 'drop-shadow(0 0 8px rgba(232, 33, 39, 0.6))',
+      }}
+    />
+  );
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -103,14 +183,16 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const cardRef = useRef(null);
 
   return (
     <div className="relative flex min-h-screen flex-col bg-secondary safe-area-top safe-area-bottom touch-manipulation">
       {/* Main container */}
       <div className="flex flex-1 flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-8 lg:px-8">
-        <div className="w-full max-w-md sm:max-w-lg animate-fade-in">
+        <div className="relative w-full max-w-md sm:max-w-lg animate-fade-in">
+          <MovingCar cardRef={cardRef} />
           {/* Card */}
-          <div className="rounded-2xl border border-white/10 bg-[#0e0f13]/95 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-3xl animate-scale-in">
+          <div ref={cardRef} className="rounded-2xl border border-white/10 bg-[#0e0f13]/95 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:rounded-3xl animate-scale-in">
             {/* Header with logo */}
             <div className="border-b border-white/5 px-4 py-4 sm:px-8 sm:py-8 lg:py-10">
               <div className="flex flex-col items-center text-center">
